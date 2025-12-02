@@ -14,14 +14,32 @@ body {
   min-height: 100vh;
 }
 
-/* 헤더 때문에 페이지 콘텐츠 위쪽 여백 추가 */
-.home, .signin, .popular, .search, .wishlist {
-  padding-top: 100px;  /* 헤더 높이만큼 */
-  padding-left: 2rem;
-  padding-right: 2rem;
+/* 메인 콘텐츠 영역 - 모든 페이지 공통 */
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.home h1, .signin h1, .popular h1, .search h1, .wishlist h1 {
+/* 모든 페이지 공통 패딩 */
+.home-page,
+.signin-page,
+.popular-page,
+.search-page,
+.wishlist-page {
+  padding-top: 100px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* 공통 제목 스타일 */
+h1 {
   font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
   margin-bottom: 1rem;
 }
