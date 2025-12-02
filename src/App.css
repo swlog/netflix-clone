@@ -1,38 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #141414;
+  color: #ffffff;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* 헤더 때문에 페이지 콘텐츠 위쪽 여백 추가 */
+.home, .signin, .popular, .search, .wishlist {
+  padding-top: 100px;  /* 헤더 높이만큼 */
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.home h1, .signin h1, .popular h1, .search h1, .wishlist h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
