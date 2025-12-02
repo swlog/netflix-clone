@@ -1,28 +1,27 @@
-import { useEffect } from 'react';
-import { getPopularMovies } from './services/tmdb';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import Popular from './pages/Popular';
+import Search from './pages/Search';
+import Wishlist from './pages/Wishlist';
 import './App.css';
 
 function App() {
-  useEffect(() => {
-    // API 테스트
-    const testAPI = async () => {
-      try {
-        const data = await getPopularMovies();
-        console.log('✅ API 연동 성공!');
-        console.log('인기 영화:', data.results);
-      } catch (error) {
-        console.error('❌ API 연동 실패:', error);
-      }
-    };
-
-    testAPI();
-  }, []);
-
   return (
-    <div className="App">
-      <h1>Netflix Clone</h1>
-      <p>개발자 도구(F12)의 Console을 확인하세요!</p>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/popular" element={<Popular />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
