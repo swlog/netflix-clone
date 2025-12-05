@@ -1,59 +1,63 @@
-import { Link, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
-export default function Header() {
-  const location = useLocation();
+function Header() {
   const [scrolled, setScrolled] = useState(false);
-  
-  // 스크롤 감지
+
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const offset = window.scrollY;
+      if (offset > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
-  const isActive = (path) => {
-    return location.pathname === path ? 'active' : '';
-  };
 
   return (
-    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
-      <div className="header-left">
-        <Link to="/" className="logo">
-          <span className="logo-n">N</span>
-        </Link>
-        
-        <nav className="nav-menu">
-          <Link to="/" className={`nav-link ${isActive('/')}`}>
-            <span>홈</span>
-            <span className="nav-underline"></span>
+    <header className={`netflix-header ${scrolled ? 'scrolled' : ''}`}>
+      <div className="header-container">
+        {/* 왼쪽 영역 */}
+        <div className="header-left">
+          <Link to="/" className="netflix-logo">
+            NETFLIX
           </Link>
-          <Link to="/popular" className={`nav-link ${isActive('/popular')}`}>
-            <span>대세 콘텐츠</span>
-            <span className="nav-underline"></span>
-          </Link>
-          <Link to="/wishlist" className={`nav-link ${isActive('/wishlist')}`}>
-            <span>내가 찜한 리스트</span>
-            <span className="nav-underline"></span>
-          </Link>
-          <Link to="/search" className={`nav-link ${isActive('/search')}`}>
-            <span>찾아보기</span>
-            <span className="nav-underline"></span>
-          </Link>
-        </nav>
-      </div>
-      
-      <div className="header-right">
-        <Link to="/signin" className="user-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
-          </svg>
-        </Link>
+          <nav className="main-nav">
+            <Link to="/">홈</Link>
+            <Link to="/popular">시리즈</Link>
+            <Link to="/popular">영화</Link>
+            <Link to="/popular">NEW! 요즘 대세 콘텐츠</Link>
+            <Link to="/wishlist">내가 찜한 리스트</Link>
+            <Link to="/search">언어별로 찾아보기</Link>
+          </nav>
+        </div>
+
+        {/* 오른쪽 영역 */}
+        <div className="header-right">
+          <button className="search-btn" aria-label="검색">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button className="notification-btn" aria-label="알림">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <div className="profile-menu">
+            <Link to="/signin" className="profile-avatar">
+              <img src="https://i.pravatar.cc/150?img=12" alt="프로필" />
+            </Link>
+          </div>
+        </div>
       </div>
     </header>
   );
 }
+
+export default Header;
