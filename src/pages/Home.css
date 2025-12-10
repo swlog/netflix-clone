@@ -1,0 +1,65 @@
+.home-page {
+  padding-top: 0; /* Hero가 헤더 아래부터 시작하도록 */
+}
+
+.home-content {
+  padding: 40px 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.movie-section {
+  margin-bottom: 50px;
+}
+
+.movie-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* 로딩 & 에러 상태 */
+.loading,
+.error {
+  text-align: center;
+  padding: 100px 20px;
+  font-size: 1.2rem;
+  margin-top: 60px;
+}
+
+.loading {
+  color: #b3b3b3;
+}
+
+.error {
+  color: #e50914;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .home-content {
+    padding: 20px 1rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .movie-section h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+}
