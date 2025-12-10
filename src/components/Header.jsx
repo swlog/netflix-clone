@@ -46,14 +46,19 @@
 //   );
 // }
 
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './Header.css';
 
 export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [scrolled, setScrolled] = useState(false);
-  
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
   // 스크롤 감지
   useEffect(() => {
     const handleScroll = () => {
@@ -63,10 +68,18 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
-  const isActive = (path) => {
-    return location.pathname === path ? 'active' : '';
+
+  // 로그아웃 기능
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('TMDb-Key');
+
+    setMenuOpen(false);
+    navigate('/signin');
   };
+
+  const isActive = (path) => (location.pathname === path ? 'active' : '');
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
@@ -74,7 +87,7 @@ export default function Header() {
         <Link to="/" className="logo">
           <span className="logo-n">N</span>
         </Link>
-        
+
         <nav className="nav-menu">
           <Link to="/" className={`nav-link ${isActive('/')}`}>
             <span>홈</span>
@@ -94,13 +107,34 @@ export default function Header() {
           </Link>
         </nav>
       </div>
-      
+
       <div className="header-right">
-        <Link to="/signin" className="user-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
-          </svg>
-        </Link>
+        {/* 로그인 상태일 때는 드롭다운 메뉴 */}
+        {isLoggedIn ? (
+          <div className="profile-wrapper">
+            <div 
+              className="user-icon" 
+              onClick={() => setMenuOpen((prev) => !prev)}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+              </svg>
+            </div>
+
+            {menuOpen && (
+              <div className="profile-menu">
+                <button onClick={handleLogout}>로그아웃</button>
+              </div>
+            )}
+          </div>
+        ) : (
+          // 로그인 안 했으면 SignIn 페이지로 이동
+          <Link to="/signin" className="user-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+            </svg>
+          </Link>
+        )}
       </div>
     </header>
   );
