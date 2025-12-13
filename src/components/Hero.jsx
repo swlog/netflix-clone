@@ -31,5 +31,4 @@ function Hero({ movie }) {
     </div>
   );
 }
-
 export default Hero;
