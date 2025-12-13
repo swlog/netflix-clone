@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Header.css';
 
-function Header() {
-  const [scrolled, setScrolled] = useState(false);
+export default function Header() {
+  // --- 1. Hook 및 상태 선언 ---
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // 로그인 상태 확인 (원격 브랜치에서 가져온 로직)
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  // --- 2. useEffect (스크롤 감지 로직) ---
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -19,10 +28,25 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // --- 3. 핸들러 함수 (로그아웃 로직) ---
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('TMDb-Key');
+
+    setMenuOpen(false);
+    navigate('/signin');
+  };
+
+  // 현재 경로 활성화 함수
+  const isActive = (path) => (location.pathname === path ? 'active' : '');
+
+  // --- 4. JSX 렌더링 (당신의 디자인 + 로그인 로직 통합) ---
   return (
+    // 당신의 헤더 디자인 클래스를 사용 (netflix-header)
     <header className={`netflix-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
-        {/* 왼쪽 영역 */}
+        {/* 왼쪽 영역: 당신의 내비게이션 메뉴 */}
         <div className="header-left">
           <Link to="/" className="netflix-logo">
             NETFLIX
@@ -37,27 +61,40 @@ function Header() {
           </nav>
         </div>
 
-        {/* 오른쪽 영역 */}
+        {/* 오른쪽 영역: 원격 브랜치에서 가져온 로그인 상태에 따른 분기 로직 */}
         <div className="header-right">
-          <button className="search-btn" aria-label="검색">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-          <button className="notification-btn" aria-label="알림">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
-          <div className="profile-menu">
-            <Link to="/signin" className="profile-avatar">
-              <img src="https://i.pravatar.cc/150?img=12" alt="프로필" />
-            </Link>
-          </div>
+          {isLoggedIn ? (
+            // 로그인 상태일 때: 프로필 아이콘과 로그아웃 드롭다운
+            <div className="profile-wrapper">
+              <div 
+                className="user-icon" 
+                onClick={() => setMenuOpen((prev) => !prev)}
+              >
+                {/* 사용자 아이콘 SVG */}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+                </svg>
+              </div>
+
+              {menuOpen && (
+                <div className="profile-menu">
+                  <button onClick={handleLogout}>로그아웃</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            // 로그아웃 상태일 때: 로그인 페이지 링크 (당신의 로직에서 가져옴)
+            <div className="profile-menu">
+                <Link to="/signin" className="profile-avatar">
+                  <img src="https://i.pravatar.cc/150?img=12" alt="프로필" />
+                </Link>
+            </div>
+          )}
+          
+          {/* 당신이 추가했던 검색/알림 버튼은 필요하다면 여기에 다시 통합할 수 있습니다. */}
+          {/* 현재는 로그인/로그아웃 로직만 우선 통합했습니다. */}
         </div>
       </div>
     </header>
   );
 }
-
-export default Header;
