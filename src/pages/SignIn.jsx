@@ -16,11 +16,14 @@ const SignIn = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
+  // 미들웨어: 로그인 상태 확인 및 리다이렉트
   useEffect(() => {
     // 이미 로그인되어 있으면 홈으로 리다이렉트
     const apiKey = localStorage.getItem('TMDb-Key');
     const isLoggedIn = localStorage.getItem('isLoggedIn');
+    
     if (apiKey && isLoggedIn === 'true') {
       navigate('/');
     }
@@ -32,33 +35,40 @@ const SignIn = () => {
     }
   }, [navigate]);
 
+  // 이메일 형식 검증
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
+  // 폼 유효성 검사
   const validateForm = () => {
     const newErrors = {};
 
+    // 아이디(이메일) 검증
     if (!formData.email) {
       newErrors.email = '이메일을 입력해주세요';
     } else if (!validateEmail(formData.email)) {
       newErrors.email = '올바른 이메일 형식이 아닙니다';
     }
 
+    // 비밀번호 검증
     if (!formData.password) {
       newErrors.password = '비밀번호를 입력해주세요';
     } else if (formData.password.length < 6) {
       newErrors.password = '비밀번호는 최소 6자 이상이어야 합니다';
     }
 
+    // 회원가입 추가 검증
     if (!isLogin) {
+      // 비밀번호 확인
       if (!formData.confirmPassword) {
         newErrors.confirmPassword = '비밀번호 확인을 입력해주세요';
       } else if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = '비밀번호가 일치하지 않습니다';
       }
 
+      // 약관 동의 (필수)
       if (!formData.agreeTerms) {
         newErrors.agreeTerms = '약관에 동의해주세요';
       }
@@ -68,21 +78,27 @@ const SignIn = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // 입력 필드 변경 핸들러
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    // 입력 시 해당 필드의 에러 제거
+    
+    // 입력 시 해당 필드의 에러 메시지 제거
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
+  // 로그인/회원가입 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setSubmitted(true);
     
+    // 폼 유효성 검사
     if (!validateForm()) {
       return;
     }
@@ -91,41 +107,60 @@ const SignIn = () => {
 
     if (isLogin) {
       // 로그인 처리
+      // TMDB API 키를 비밀번호로 사용하여 인증
       tryLogin(
         formData.email,
         formData.password,
         (user) => {
           setIsLoading(false);
           
-          // Remember Me 처리
+          // Remember Me 기능: 이메일 저장
           if (formData.rememberMe) {
             localStorage.setItem('savedEmail', formData.email);
           } else {
             localStorage.removeItem('savedEmail');
           }
 
+          // 로그인 상태 저장 (Local Storage)
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('currentUser', formData.email);
           
-          toast.success(`환영합니다, ${formData.email}님!`);
+          // 로그인 성공 메시지 (Custom Toast)
+          toast.success(`환영합니다, ${formData.email}님!`, {
+            duration: 3000,
+            position: 'top-center',
+            icon: '👋',
+          });
           
+          // 메인 페이지로 이동
           setTimeout(() => {
             navigate('/');
           }, 500);
         },
         (error) => {
           setIsLoading(false);
-          toast.error(error || '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
+          // 로그인 실패 에러 메시지 (Custom Toast)
+          toast.error(error || '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.', {
+            duration: 4000,
+            position: 'top-center',
+          });
         }
       );
     } else {
       // 회원가입 처리
+      // TMDB API 키를 비밀번호로 사용하여 계정 생성
       tryRegister(
         formData.email,
         formData.password,
         (user) => {
           setIsLoading(false);
-          toast.success('회원가입이 완료되었습니다!');
+          
+          // 회원가입 성공 메시지 (Custom Toast)
+          toast.success('회원가입이 완료되었습니다! 로그인 화면으로 이동합니다.', {
+            duration: 3000,
+            position: 'top-center',
+            icon: '🎉',
+          });
           
           // 회원가입 후 자동으로 로그인 화면으로 전환
           setTimeout(() => {
@@ -139,12 +174,17 @@ const SignIn = () => {
         },
         (error) => {
           setIsLoading(false);
-          toast.error(error || '회원가입에 실패했습니다.');
+          // 회원가입 실패 에러 메시지 (Custom Toast)
+          toast.error(error || '회원가입에 실패했습니다. 다시 시도해주세요.', {
+            duration: 4000,
+            position: 'top-center',
+          });
         }
       );
     }
   };
 
+  // 로그인/회원가입 모드 전환 (컴포넌트 전환 효과)
   const toggleMode = () => {
     setIsLogin(!isLogin);
     setErrors({});
@@ -157,24 +197,33 @@ const SignIn = () => {
 
   return (
     <div className="signin-container">
+      {/* 배경 애니메이션 */}
       <div className="signin-background">
         <div className="gradient-orb orb-1"></div>
         <div className="gradient-orb orb-2"></div>
         <div className="gradient-orb orb-3"></div>
       </div>
 
+      {/* 로그인/회원가입 카드 */}
       <div className={`signin-card ${isLogin ? 'login-mode' : 'register-mode'}`}>
         <div className="card-inner">
+          {/* 헤더 */}
           <div className="card-header">
-            <h1 className="card-title">{isLogin ? 'Sign in' : 'Sign up'}</h1>
+            <h1 className="card-title">{isLogin ? '로그인' : '회원가입'}</h1>
             <p className="card-subtitle">
-              {isLogin ? 'Welcome back! Please enter your details.' : 'Create your account to get started.'}
+              {isLogin 
+                ? '다시 만나서 반갑습니다! 로그인 정보를 입력해주세요.' 
+                : '새로운 계정을 만들어 시작하세요.'}
             </p>
           </div>
 
+          {/* 폼 */}
           <form onSubmit={handleSubmit} className="signin-form">
+            {/* 1. 아이디(이메일) 입력 */}
             <div className="form-group">
-              <label htmlFor="email" className="form-label">Username or Email</label>
+              <label htmlFor="email" className="form-label">
+                {isLogin ? '아이디 또는 이메일' : '이메일'}
+              </label>
               <input
                 type="email"
                 id="email"
@@ -182,14 +231,19 @@ const SignIn = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className={`form-input ${errors.email ? 'error' : ''}`}
-                placeholder="Enter your email"
+                placeholder={isLogin ? '아이디 또는 이메일' : '이메일'}
                 autoComplete="email"
               />
-              {errors.email && <span className="error-message">{errors.email}</span>}
+              
+              {submitted && errors.email && ( <span className="error-message">{errors.email}</span>)}
+
             </div>
 
+            {/* 2. 비밀번호 입력 (TMDB API 키) */}
             <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                비밀번호 {!isLogin && <span className="label-hint">(TMDB API 키)</span>}
+              </label>
               <input
                 type="password"
                 id="password"
@@ -197,15 +251,21 @@ const SignIn = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 className={`form-input ${errors.password ? 'error' : ''}`}
-                placeholder="Enter your password"
+                placeholder={isLogin ? "비밀번호" : "비밀번호 (TMDB API 키)"}
                 autoComplete={isLogin ? 'current-password' : 'new-password'}
               />
-              {errors.password && <span className="error-message">{errors.password}</span>}
+              {submitted && errors.password && (
+  <span className="error-message">{errors.password}</span>
+)}
+
             </div>
 
+            {/* 3. 비밀번호 확인 입력 (회원가입 시에만) */}
             {!isLogin && (
               <div className="form-group">
-                <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                <label htmlFor="confirmPassword" className="form-label">
+                  비밀번호 확인
+                </label>
                 <input
                   type="password"
                   id="confirmPassword"
@@ -213,16 +273,21 @@ const SignIn = () => {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
-                  placeholder="Confirm your password"
+                  placeholder="비밀번호 확인"
                   autoComplete="new-password"
                 />
-                {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+               {submitted && errors.confirmPassword && (
+  <span className="error-message">{errors.confirmPassword}</span>
+)}
+
               </div>
             )}
 
+            {/* 4. 옵션 (Remember Me / 약관 동의) */}
             <div className="form-options">
               {isLogin ? (
                 <>
+                  {/* Remember Me (아이디 저장 및 자동 로그인) */}
                   <label className="checkbox-label">
                     <input
                       type="checkbox"
@@ -231,31 +296,38 @@ const SignIn = () => {
                       onChange={handleInputChange}
                       className="checkbox-input"
                     />
-                    <span className="checkbox-text">Remember me</span>
+                    <span className="checkbox-text">아이디 저장</span>
                   </label>
                   <button type="button" className="link-button">
-                    Forgot Password?
+                    비밀번호 찾기
                   </button>
                 </>
               ) : (
-                <label className="checkbox-label full-width">
-                  <input
-                    type="checkbox"
-                    name="agreeTerms"
-                    checked={formData.agreeTerms}
-                    onChange={handleInputChange}
-                    className={`checkbox-input ${errors.agreeTerms ? 'error' : ''}`}
-                  />
-                  <span className="checkbox-text">
-                    I agree to the <a href="#" className="inline-link">Terms and Conditions</a>
-                  </span>
-                </label>
+                <>
+                  {/* 약관 동의 (필수) */}
+                  <label className="checkbox-label full-width">
+                    <input
+                      type="checkbox"
+                      name="agreeTerms"
+                      checked={formData.agreeTerms}
+                      onChange={handleInputChange}
+                      className={`checkbox-input ${errors.agreeTerms ? 'error' : ''}`}
+                    />
+                    <span className="checkbox-text">
+                      <a href="#" className="inline-link" onClick={(e) => e.preventDefault()}>
+                        이용약관
+                      </a>에 동의합니다
+                    </span>
+                  </label>
+                  {submitted && errors.agreeTerms && (
+  <span className="error-message">{errors.agreeTerms}</span>
+)}
+
+                </>
               )}
             </div>
-            {!isLogin && errors.agreeTerms && (
-              <span className="error-message">{errors.agreeTerms}</span>
-            )}
 
+            {/* 5. 제출 버튼 (로그인 버튼 / 회원가입 버튼) */}
             <button 
               type="submit" 
               className="submit-button"
@@ -264,20 +336,21 @@ const SignIn = () => {
               {isLoading ? (
                 <span className="loading-spinner"></span>
               ) : (
-                isLogin ? 'LOGIN' : 'SIGN UP'
+                isLogin ? '로그인' : '회원가입'
               )}
             </button>
           </form>
 
+          {/* 푸터 (모드 전환) */}
           <div className="card-footer">
             <p className="footer-text">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}
               <button 
                 type="button" 
                 onClick={toggleMode} 
                 className="toggle-button"
               >
-                {isLogin ? 'Sign up' : 'Sign in'}
+                {isLogin ? '회원가입' : '로그인'}
               </button>
             </p>
           </div>
