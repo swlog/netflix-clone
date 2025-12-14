@@ -12,7 +12,6 @@ const Home = () => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [actionMovies, setActionMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [apiError, setApiError] = useState(null);
   
   // 중복 에러 토스트 방지
   const hasShownError = useRef(false);
