@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 export default function Header() {
   // --- 1. Hook 및 상태 선언 ---
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [scrolled, setScrolled] = useState(false);
@@ -37,7 +36,6 @@ export default function Header() {
     setMenuOpen(false);
     navigate('/signin');
   };
-
 
   // --- 4. JSX 렌더링 (당신의 디자인 + 로그인 로직 통합) ---
   return (
