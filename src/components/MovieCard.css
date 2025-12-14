@@ -315,7 +315,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  .line-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+
+  -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+
+  line-clamp: 2; /* ← 표준 속성 (경고 해결) */
+}
   -webkit-box-orient: vertical;
   line-height: 1.4;
 }
