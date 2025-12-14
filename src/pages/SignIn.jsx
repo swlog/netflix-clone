@@ -1,49 +1,8 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-
-function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('로그인 시도:', email, password);
-    // 나중에 로그인 로직 추가
-  };
-
-  return (
-    <div className="signin-page">
-      <h1>로그인</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>이메일:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="이메일을 입력하세요"
-          />
-        </div>
-        <div>
-          <label>비밀번호:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="비밀번호를 입력하세요"
-          />
-        </div>
-        <button type="submit">로그인</button>
-      </form>
-    </div>
-  );
-}
-=======
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { tryLogin, tryRegister } from '../utils/auth';
 import './SignIn.css';
+import { useState, useEffect } from 'react';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -327,6 +286,5 @@ const SignIn = () => {
     </div>
   );
 };
->>>>>>> 636ff70f304275f9eb024e8194fdd7aad234a293
 
 export default SignIn;
