@@ -92,7 +92,7 @@ const Home = () => {
     if (added) {
       toast.success(
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="fas fa-star" style={{ color: '#FFD700' }}></i>
+          <i className="fas fa-heart" style={{ color: '#e50914' }}></i>
           <span><strong>{movie.title}</strong>을(를) 위시리스트에 추가했습니다</span>
         </div>,
         {
@@ -101,14 +101,14 @@ const Home = () => {
           style: {
             background: 'rgba(20, 20, 20, 0.95)',
             color: '#fff',
-            border: '1px solid rgba(255, 215, 0, 0.5)',
+            border: '1px solid rgba(229, 9, 20, 0.5)',
           },
         }
       );
     } else {
       toast(
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="far fa-star" style={{ color: '#b3b3b3' }}></i>
+          <i className="far fa-heart" style={{ color: '#b3b3b3' }}></i>
           <span><strong>{movie.title}</strong>을(를) 위시리스트에서 제거했습니다</span>
         </div>,
         {
@@ -151,7 +151,7 @@ const Home = () => {
           </p>
           {wishlist.length > 0 && (
             <div className="wishlist-count">
-              <i className="fas fa-star"></i>
+              <i className="fas fa-heart"></i>
               <span>위시리스트 {wishlist.length}개</span>
             </div>
           )}
@@ -166,7 +166,7 @@ const Home = () => {
           <section className="movie-section wishlist-section">
             <div className="section-header">
               <h2>
-                <i className="fas fa-star"></i>
+                <i className="fas fa-heart"></i>
                 내 위시리스트
               </h2>
               <span className="movie-count">{wishlist.length}개</span>
