@@ -291,7 +291,7 @@ export const getRecommendations = async (movieId, page = 1) => {
   }
 };
 
-export default {
+const tmdbService = {
   getImageUrl,
   getPopularMovies,
   getNowPlayingMovies,
@@ -308,3 +308,5 @@ export default {
   getRecommendations,
   GENRES,
 };
+
+export default tmdbService;
