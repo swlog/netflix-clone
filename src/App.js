@@ -17,6 +17,7 @@ import './pages/Popular.css';  // Popular.jsx
 import './pages/Wishlist.css'; // Wishlist.jsx
 
 
+
 function App() {
   return (
     <Router>
@@ -51,7 +52,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute> 
                 <Header />
                 <Home />
               </ProtectedRoute>

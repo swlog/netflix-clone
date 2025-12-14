@@ -1,283 +1,206 @@
-/* .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 4%;
-  height: 70px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 100%);
-  z-index: 100;
-  transition: all 0.3s ease;
-}
-
-/* 스크롤 시 배경 변화 */
-/* .header.scrolled {
-  background: rgba(20, 20, 20, 0.98);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-/* 로고 애니메이션 */
-/* .logo {
-  text-decoration: none;
-  transition: transform 0.3s ease;
-}
-
-.logo:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.logo-n {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #E50914;
-  text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
-  transition: all 0.3s ease;
-}
-
-.logo:hover .logo-n {
-  text-shadow: 0 0 20px rgba(229, 9, 20, 0.8);
-} */
-
-/* 네비게이션 */
-/* .nav-menu {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.nav-link {
-  color: #e5e5e5;
-  text-decoration: none;
-  font-size: 0.9rem;
-  position: relative;
-  padding: 0.5rem 0;
-  transition: color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
-
-/* 언더라인 애니메이션 */
-/* .nav-underline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #E50914, #ff4545);
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover .nav-underline,
-.nav-link.active .nav-underline {
-  width: 100%;
-}
-
-.nav-link:hover {
-  color: #ffffff;
-}
-
-.nav-link.active {
-  color: #ffffff;
-  font-weight: bold;
-} */
-
-/* 사용자 아이콘 애니메이션 */
-/* .header-right {
-  display: flex;
-  align-items: center;
-}
-
-.user-icon {
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0.5rem;
-  border-radius: 50%;
-}
-
-.user-icon:hover {
-  background: rgba(229, 9, 20, 0.2);
-  transform: scale(1.1);
-}
-
-.user-icon svg {
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
-} */
-
-.profile-wrapper {
-  position: relative;
-}
-
-.profile-menu {
-  position: absolute;
-  right: 0;
-  top: 36px;
-  background: #111;
-  border-radius: 4px;
-  padding: 10px;
-  width: 120px;
-  text-align: center;
-  border: 1px solid #333;
-}
-
-.profile-menu button {
-  background: none;
-  border: none;
-  color: white;
-  width: 100%;
-  padding: 8px 0;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.profile-menu button:hover {
-  background: #222;
-}
-
-/* 반응형 */
-/* @media (max-width: 768px) {
-  .nav-menu {
-    gap: 1rem;
-  }
-  
-  .nav-link {
-    font-size: 0.8rem;
-  }
-  
-  .logo-n {
-    font-size: 2rem;
-  }
-} */ 
+/* Header-Option3.css - 그라데이션 색상 변화 */
 
 .netflix-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 70px;
   z-index: 1000;
-  padding: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, transparent);
-  transition: background-color 0.4s;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
 }
 
 .netflix-header.scrolled {
-  background-color: #141414;
+  background: linear-gradient(135deg, 
+    rgba(229, 9, 20, 0.15) 0%, 
+    rgba(20, 20, 20, 0.95) 50%, 
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  box-shadow: 0 4px 20px rgba(229, 9, 20, 0.2);
 }
 
 .header-container {
+  max-width: 100%;
+  height: 100%;
+  padding: 0 60px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 4%;
-  height: 70px;
+  justify-content: space-between;
 }
 
-/* 왼쪽 영역 */
 .header-left {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 40px;
 }
 
 .netflix-logo {
+  font-size: 28px;
+  font-weight: 900;
   color: #e50914;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 1.8em;
   text-decoration: none;
-  vertical-align: middle;
-  font-family: 'Impact', 'Arial Black', sans-serif;
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 0 transparent);
 }
 
-@media screen and (min-width: 950px) {
-  .netflix-logo {
-    font-size: 25px;
-  }
+.netflix-header.scrolled .netflix-logo {
+  filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.6));
 }
+
+.netflix-logo:hover {
+  opacity: 0.8;
+}
+
 .main-nav {
   display: flex;
-  gap: 20px;
   align-items: center;
+  gap: 20px;
 }
 
-.main-nav a {
-  color: #b3b3b3;  /* 기본: 진한 회색 (어둡게) */
+.nav-link {
+  color: #e5e5e5;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  white-space: nowrap;
-  transition: color 0.3s;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 20px;
 }
 
-.main-nav a:hover {
-  color: #999999;  /* 호버: 더 진한 회색 */
+.nav-link:hover {
+  color: #ffffff;
+  background: rgba(229, 9, 20, 0.2);
 }
 
-.main-nav a:active {
-  color: #ffffff;  /* 클릭하는 순간: 흰색 */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e50914, transparent);
+  transition: width 0.3s ease;
 }
 
-.main-nav a.active {
-  color: #ffffff;  /* 현재 페이지: 흰색 고정 */
-  font-weight: 700;
+.nav-link:hover::before {
+  width: 80%;
 }
 
-/* 오른쪽 영역 */
 .header-right {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.search-btn,
-.notification-btn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 5px;
-  transition: color 0.3s;
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
 }
 
-.search-btn:hover,
-.notification-btn:hover {
-  color: #b3b3b3;
+.user-email {
+  color: #e5e5e5;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
-.profile-avatar {
-  display: block;
+.netflix-header.scrolled .user-email {
+  text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+}
+
+.user-icon {
   width: 32px;
   height: 32px;
+  background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
   border-radius: 4px;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.4);
 }
 
-.profile-avatar img {
+.user-icon:hover {
+  background: linear-gradient(135deg, #ff0a1a 0%, #e50914 100%);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+}
+
+.profile-menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(0, 0, 0, 0.98) 100%);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 150px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logout-btn {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  color: #e5e5e5;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  border-radius: 4px;
 }
 
-/* 반응형 - 태블릿 */
-@media (max-width: 950px) {
-  .main-nav a {
-    font-size: 13px;
+.logout-btn:hover {
+  background: linear-gradient(90deg, rgba(229, 9, 20, 0.2), rgba(229, 9, 20, 0.1));
+  color: #ffffff;
+}
+
+.signin-link {
+  color: #e5e5e5;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.signin-link:hover {
+  background: linear-gradient(135deg, #ff0a1a 0%, #e50914 100%);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
+}
+
+@media (max-width: 1024px) {
+  .header-container {
+    padding: 0 30px;
+  }
+  
+  .header-left {
+    gap: 25px;
   }
   
   .main-nav {
@@ -285,33 +208,20 @@
   }
 }
 
-/* 반응형 - 모바일 */
 @media (max-width: 768px) {
   .header-container {
     padding: 0 20px;
-    height: 56px;
   }
-
+  
   .netflix-logo {
-    font-size: 20px;
+    font-size: 24px;
   }
-
+  
   .main-nav {
     display: none;
   }
-
-  .header-right {
-    gap: 15px;
-  }
-
-  .search-btn svg,
-  .notification-btn svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .profile-avatar {
-    width: 28px;
-    height: 28px;
+  
+  .user-email {
+    display: none;
   }
 }
