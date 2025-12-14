@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import tmdbService from '../services/tmdb';
 import './MovieCard.css';
 
 const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
@@ -25,6 +26,9 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
     return '#ff6b6b';
   };
 
+  // tmdbService의 getImageUrl 사용
+  const posterUrl = tmdbService.getImageUrl(movie.poster_path, 'w500');
+
   return (
     <div className={`movie-card ${isInWishlist ? 'in-wishlist' : ''}`}>
       {/* 위시리스트 버튼 */}
@@ -43,12 +47,17 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
             <i className="fas fa-film"></i>
           </div>
         )}
-        <img 
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-          alt={movie.title}
-          onLoad={() => setImageLoaded(true)}
-          style={{ display: imageLoaded ? 'block' : 'none' }}
-        />
+        {posterUrl && (
+          <img 
+            src={posterUrl} 
+            alt={movie.title}
+            onLoad={() => setImageLoaded(true)}
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+            style={{ display: imageLoaded ? 'block' : 'none' }}
+          />
+        )}
         
         {/* 호버 오버레이 */}
         <div className="movie-overlay">
