@@ -38,8 +38,6 @@ export default function Header() {
     navigate('/signin');
   };
 
-  // 현재 경로 활성화 함수
-  const isActive = (path) => (location.pathname === path ? 'active' : '');
 
   // --- 4. JSX 렌더링 (당신의 디자인 + 로그인 로직 통합) ---
   return (
