@@ -31,13 +31,13 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
 
   return (
     <div className={`movie-card ${isInWishlist ? 'in-wishlist' : ''}`}>
-      {/* 위시리스트 버튼 */}
+      {/* 위시리스트 버튼 - 별 아이콘 */}
       <button 
         className={`wishlist-btn ${isInWishlist ? 'active' : ''}`}
         onClick={handleWishlistClick}
         aria-label={isInWishlist ? '위시리스트에서 제거' : '위시리스트에 추가'}
       >
-        <i className={`fas fa-heart ${isInWishlist ? 'active' : ''}`}></i>
+        <i className={`${isInWishlist ? 'fas' : 'far'} fa-star`}></i>
       </button>
 
       {/* 포스터 이미지 */}

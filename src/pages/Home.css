@@ -120,14 +120,14 @@
   gap: 10px;
   margin-top: 20px;
   padding: 12px 24px;
-  background: rgba(229, 9, 20, 0.2);
+  background: rgba(255, 215, 0, 0.15);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(229, 9, 20, 0.5);
+  border: 2px solid rgba(255, 215, 0, 0.5);
   border-radius: 30px;
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
-  box-shadow: 0 4px 20px rgba(229, 9, 20, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
   animation: wishlistPulse 2s ease-in-out infinite;
 }
 
@@ -138,14 +138,14 @@
 
 .wishlist-count i {
   font-size: 1.2rem;
-  color: #e50914;
-  animation: heartBeatSlow 2s ease-in-out infinite;
+  color: #FFD700;
+  animation: starTwinkle 2s ease-in-out infinite;
 }
 
-@keyframes heartBeatSlow {
-  0%, 100% { transform: scale(1); }
-  25%, 75% { transform: scale(1.1); }
-  50% { transform: scale(1.05); }
+@keyframes starTwinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  25%, 75% { transform: scale(1.1) rotate(5deg); opacity: 0.9; }
+  50% { transform: scale(1.15) rotate(-5deg); opacity: 1; }
 }
 
 /* 메인 콘텐츠 */
@@ -180,16 +180,21 @@
 .movie-section:nth-child(5) { animation-delay: 0.4s; }
 .movie-section:nth-child(6) { animation-delay: 0.5s; }
 
-/* 위시리스트 섹션 특별 스타일 */
+/* 위시리스트 섹션 특별 스타일 - 별 테마 */
 .wishlist-section {
-  background: linear-gradient(135deg, rgba(229, 9, 20, 0.05), rgba(229, 9, 20, 0.02));
-  border: 2px solid rgba(229, 9, 20, 0.2);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 215, 0, 0.03));
+  border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 20px;
   padding: 30px;
   box-shadow: 
-    0 10px 40px rgba(229, 9, 20, 0.2),
-    inset 0 0 20px rgba(229, 9, 20, 0.05);
+    0 10px 40px rgba(255, 215, 0, 0.2),
+    inset 0 0 20px rgba(255, 215, 0, 0.05);
   backdrop-filter: blur(10px);
+}
+
+.wishlist-section .section-header h2 i {
+  color: #FFD700;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
 }
 
 /* 섹션 헤더 */
@@ -432,3 +437,4 @@
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #f40612, #e50914);
 }
+
