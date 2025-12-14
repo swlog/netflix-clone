@@ -20,7 +20,6 @@ const Home = () => {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        setApiError(null);
 
         // 병렬로 영화 데이터 가져오기
         const [popularData, nowPlayingData, actionData] = await Promise.all([
@@ -38,7 +37,6 @@ const Home = () => {
         
       } catch (error) {
         console.error('영화 목록 로딩 실패:', error);
-        setApiError(error.message);
         
         // 에러 토스트를 한 번만 표시
         if (!hasShownError.current) {
