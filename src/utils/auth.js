@@ -10,6 +10,7 @@ export const tryLogin = (email, password, success, fail) => {
     );
 
     if (user) {
+      // 비밀번호를 TMDB API 키로 저장 (나중에 영화 정보 불러올 때 사용)
       localStorage.setItem('TMDb-Key', user.password);
       localStorage.setItem('currentUser', email);
       localStorage.setItem('isLoggedIn', 'true');
@@ -42,7 +43,7 @@ export const tryRegister = (email, password, success, fail) => {
 
     const newUser = {
       id: email,
-      password: password,
+      password: password, // TMDB API 키로 사용될 비밀번호
       createdAt: new Date().toISOString(),
     };
 
@@ -76,4 +77,12 @@ export const getCurrentUser = () => {
   const users = usersJson ? JSON.parse(usersJson) : [];
   
   return users.find((user) => user.id === email) || null;
+};
+
+/**
+ * 현재 저장된 TMDB API 키 가져오기
+ * @returns {string|null} - 저장된 API 키 또는 null
+ */
+export const getTMDbAPIKey = () => {
+  return localStorage.getItem('TMDb-Key');
 };

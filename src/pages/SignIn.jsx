@@ -17,6 +17,7 @@ const SignIn = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // 미들웨어: 로그인 상태 확인 및 리다이렉트
   useEffect(() => {
@@ -107,7 +108,6 @@ const SignIn = () => {
 
     if (isLogin) {
       // 로그인 처리
-      // TMDB API 키를 비밀번호로 사용하여 인증
       tryLogin(
         formData.email,
         formData.password,
@@ -121,11 +121,11 @@ const SignIn = () => {
             localStorage.removeItem('savedEmail');
           }
 
-          // 로그인 상태 저장 (Local Storage)
+          // 로그인 상태 저장
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('currentUser', formData.email);
           
-          // 로그인 성공 메시지 (Custom Toast)
+          // 로그인 성공 메시지
           toast.success(`환영합니다, ${formData.email}님!`, {
             duration: 3000,
             position: 'top-center',
@@ -139,7 +139,6 @@ const SignIn = () => {
         },
         (error) => {
           setIsLoading(false);
-          // 로그인 실패 에러 메시지 (Custom Toast)
           toast.error(error || '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.', {
             duration: 4000,
             position: 'top-center',
@@ -148,14 +147,12 @@ const SignIn = () => {
       );
     } else {
       // 회원가입 처리
-      // TMDB API 키를 비밀번호로 사용하여 계정 생성
       tryRegister(
         formData.email,
         formData.password,
         (user) => {
           setIsLoading(false);
           
-          // 회원가입 성공 메시지 (Custom Toast)
           toast.success('회원가입이 완료되었습니다! 로그인 화면으로 이동합니다.', {
             duration: 3000,
             position: 'top-center',
@@ -174,7 +171,6 @@ const SignIn = () => {
         },
         (error) => {
           setIsLoading(false);
-          // 회원가입 실패 에러 메시지 (Custom Toast)
           toast.error(error || '회원가입에 실패했습니다. 다시 시도해주세요.', {
             duration: 4000,
             position: 'top-center',
@@ -184,15 +180,27 @@ const SignIn = () => {
     }
   };
 
-  // 로그인/회원가입 모드 전환 (컴포넌트 전환 효과)
+  // 로그인/회원가입 모드 전환 (팬시한 애니메이션 효과)
   const toggleMode = () => {
-    setIsLogin(!isLogin);
-    setErrors({});
-    setFormData(prev => ({
-      ...prev,
-      confirmPassword: '',
-      agreeTerms: false
-    }));
+    // 전환 애니메이션 시작
+    setIsTransitioning(true);
+    
+    // 300ms 후에 실제 모드 전환 (flipOut 애니메이션 중간 지점)
+    setTimeout(() => {
+      setIsLogin(!isLogin);
+      setErrors({});
+      setSubmitted(false);
+      setFormData(prev => ({
+        ...prev,
+        confirmPassword: '',
+        agreeTerms: false
+      }));
+      
+      // 전환 완료 후 transitioning 상태 해제
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 50);
+    }, 300);
   };
 
   return (
@@ -205,7 +213,7 @@ const SignIn = () => {
       </div>
 
       {/* 로그인/회원가입 카드 */}
-      <div className={`signin-card ${isLogin ? 'login-mode' : 'register-mode'}`}>
+      <div className={`signin-card ${isLogin ? 'login-mode' : 'register-mode'} ${isTransitioning ? 'transitioning' : ''}`}>
         <div className="card-inner">
           {/* 헤더 */}
           <div className="card-header">
@@ -234,12 +242,12 @@ const SignIn = () => {
                 placeholder={isLogin ? '아이디 또는 이메일' : '이메일'}
                 autoComplete="email"
               />
-              
-              {submitted && errors.email && ( <span className="error-message">{errors.email}</span>)}
-
+              <span className="error-message">
+                {submitted && errors.email ? errors.email : ''}
+              </span>
             </div>
 
-            {/* 2. 비밀번호 입력 (TMDB API 키) */}
+            {/* 2. 비밀번호 입력 */}
             <div className="form-group">
               <label htmlFor="password" className="form-label">
                 비밀번호 {!isLogin && <span className="label-hint">(TMDB API 키)</span>}
@@ -254,10 +262,9 @@ const SignIn = () => {
                 placeholder={isLogin ? "비밀번호" : "비밀번호 (TMDB API 키)"}
                 autoComplete={isLogin ? 'current-password' : 'new-password'}
               />
-              {submitted && errors.password && (
-  <span className="error-message">{errors.password}</span>
-)}
-
+              <span className="error-message">
+                {submitted && errors.password ? errors.password : ''}
+              </span>
             </div>
 
             {/* 3. 비밀번호 확인 입력 (회원가입 시에만) */}
@@ -276,10 +283,9 @@ const SignIn = () => {
                   placeholder="비밀번호 확인"
                   autoComplete="new-password"
                 />
-               {submitted && errors.confirmPassword && (
-  <span className="error-message">{errors.confirmPassword}</span>
-)}
-
+                <span className="error-message">
+                  {submitted && errors.confirmPassword ? errors.confirmPassword : ''}
+                </span>
               </div>
             )}
 
@@ -287,7 +293,6 @@ const SignIn = () => {
             <div className="form-options">
               {isLogin ? (
                 <>
-                  {/* Remember Me (아이디 저장 및 자동 로그인) */}
                   <label className="checkbox-label">
                     <input
                       type="checkbox"
@@ -303,8 +308,7 @@ const SignIn = () => {
                   </button>
                 </>
               ) : (
-                <>
-                  {/* 약관 동의 (필수) */}
+                <div style={{ width: '100%' }}>
                   <label className="checkbox-label full-width">
                     <input
                       type="checkbox"
@@ -319,15 +323,14 @@ const SignIn = () => {
                       </a>에 동의합니다
                     </span>
                   </label>
-                  {submitted && errors.agreeTerms && (
-  <span className="error-message">{errors.agreeTerms}</span>
-)}
-
-                </>
+                  <span className="error-message">
+                    {submitted && errors.agreeTerms ? errors.agreeTerms : ''}
+                  </span>
+                </div>
               )}
             </div>
 
-            {/* 5. 제출 버튼 (로그인 버튼 / 회원가입 버튼) */}
+            {/* 5. 제출 버튼 */}
             <button 
               type="submit" 
               className="submit-button"
@@ -341,7 +344,7 @@ const SignIn = () => {
             </button>
           </form>
 
-          {/* 푸터 (모드 전환) */}
+          {/* 푸터 */}
           <div className="card-footer">
             <p className="footer-text">
               {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}
@@ -361,3 +364,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
