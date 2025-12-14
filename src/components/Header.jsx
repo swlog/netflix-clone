@@ -49,7 +49,7 @@ export default function Header() {
           </Link>
           <nav className="main-nav">
             <Link to="/">홈</Link>
-            <Link to="/popular">시리즈</Link>
+            <Link to="/popular">시리즈1</Link>
             <Link to="/popular">영화</Link>
             <Link to="/popular">NEW! 요즘 대세 콘텐츠</Link>
             <Link to="/wishlist">내가 찜한 리스트</Link>
