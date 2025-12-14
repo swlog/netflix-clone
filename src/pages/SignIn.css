@@ -1,116 +1,78 @@
-<<<<<<< HEAD
-.signin-page {
-  max-width: 500px;
-  margin: 0 auto;
-  padding-top: 150px;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+/* =========================
+   전역 리셋
+========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.signin-page form {
-  background-color: #1a1a1a;
-  padding: 40px;
-  border-radius: 8px;
-}
-
-.signin-page form div {
-  margin-bottom: 20px;
-}
-
-.signin-page label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #b3b3b3;
-}
-
-.signin-page input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #333;
-  background-color: #333;
-  color: white;
-  border-radius: 4px;
-  outline: none;
-}
-
-.signin-page input:focus {
-  border-color: #e50914;
-}
-
-.signin-page button {
-  width: 100%;
-  padding: 14px;
-  background-color: #e50914;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.signin-page button:hover {
-  background-color: #f40612;
-=======
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-
+/* =========================
+   컨테이너
+========================= */
 .signin-container {
   position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 20px;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1d3e 50%, #0d111d 100%);
 }
 
-/* Animated Background */
+/* =========================
+   배경 애니메이션
+========================= */
 .signin-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: -1;
+  transition: all 0.5s ease;
+}
+
+/* 전환 중일 때 배경 펄스 효과 */
+.signin-container:has(.signin-card.transitioning) .gradient-orb {
+  animation: pulse 0.6s ease-in-out;
 }
 
 .gradient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(100px);
   opacity: 0.3;
-  animation: float 20s ease-in-out infinite;
+  animation: float 20s infinite ease-in-out;
+  transition: all 0.5s ease;
 }
 
 .orb-1 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #2563eb, transparent);
-  top: -100px;
-  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, #e50914, #b20710);
+  top: -250px;
+  left: -250px;
   animation-delay: 0s;
 }
 
 .orb-2 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #7c3aed, transparent);
-  bottom: -150px;
-  right: -150px;
-  animation-delay: 5s;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #831010, #e50914);
+  bottom: -200px;
+  right: -200px;
+  animation-delay: 7s;
 }
 
 .orb-3 {
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, #ec4899, transparent);
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #b20710, #831010);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation-delay: 10s;
+  animation-delay: 14s;
 }
 
 @keyframes float {
@@ -118,32 +80,108 @@
     transform: translate(0, 0) scale(1);
   }
   33% {
-    transform: translate(50px, -50px) scale(1.1);
+    transform: translate(30px, -50px) scale(1.1);
   }
   66% {
-    transform: translate(-30px, 30px) scale(0.9);
+    transform: translate(-20px, 20px) scale(0.9);
   }
 }
 
-/* Card */
-.signin-card {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 480px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  animation: slideIn 0.6s ease-out;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+    filter: blur(100px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(120px);
+  }
 }
 
-@keyframes slideIn {
+/* =========================
+   카드
+========================= */
+.signin-card {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 60px 68px 40px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-inner {
+  width: 100%;
+}
+
+/* 모드 전환 애니메이션 */
+.signin-card.login-mode {
+  animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.signin-card.register-mode {
+  animation: slideInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 전환 중일 때 */
+.signin-card.transitioning {
+  animation: flipOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 슬라이드 인 애니메이션 */
+@keyframes slideInRight {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateX(50px) rotateY(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px) rotateY(15deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0);
+  }
+}
+
+/* 플립 아웃 애니메이션 */
+@keyframes flipOut {
+  0% {
+    opacity: 1;
+    transform: perspective(800px) rotateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: perspective(800px) rotateY(90deg) scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: perspective(800px) rotateY(90deg) scale(0.9);
+  }
+}
+
+/* =========================
+   헤더
+========================= */
+.card-header {
+  margin-bottom: 28px;
+  animation: fadeInDown 0.4s ease-out backwards;
+  animation-delay: 0s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -151,83 +189,49 @@
   }
 }
 
-.card-inner {
-  padding: 48px 40px;
-  position: relative;
-}
-
-/* Mode Transition Effect */
-.signin-card.login-mode .card-inner {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.signin-card.register-mode .card-inner {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Header */
-.card-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
 .card-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 12px 0;
-  letter-spacing: -0.5px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 8px;
+  color: #fff;
 }
 
 .card-subtitle {
-  font-family: 'Outfit', sans-serif;
   font-size: 14px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  line-height: 1.5;
+  color: #b3b3b3;
 }
 
-/* Form */
+/* 전환 중일 때 */
+.signin-card.transitioning .card-header {
+  animation: none;
+  opacity: 0;
+}
+
+/* =========================
+   폼
+========================= */
 .signin-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  animation: slideInUp 0.5s ease-out backwards;
+  position: relative;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  animation: fadeInUp 0.4s ease-out backwards;
 }
 
-.form-group:nth-child(1) {
-  animation-delay: 0.1s;
-}
+/* 각 필드에 순차적 딜레이 적용 */
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.15s; }
+.form-group:nth-child(3) { animation-delay: 0.2s; }
+.form-group:nth-child(4) { animation-delay: 0.25s; }
 
-.form-group:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.form-group:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-@keyframes slideInUp {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -238,79 +242,99 @@
   }
 }
 
-.form-label {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.3px;
+/* 전환 중일 때는 애니메이션 비활성화 */
+.signin-card.transitioning .form-group {
+  animation: none;
+  opacity: 0;
 }
 
+/* 라벨 숨김 */
+.form-label {
+  display: none;
+}
+
+.label-hint {
+  font-size: 12px;
+  color: #8c8c8c;
+  font-weight: 400;
+}
+
+/* 입력 필드 */
 .form-input {
   width: 100%;
-  padding: 14px 16px;
-  font-family: 'Outfit', sans-serif;
+  height: 50px;
+  padding: 1rem;
+  margin: 0;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #333;
+  color: #fff;
   font-size: 15px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
   outline: none;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
 .form-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: #8c8c8c;
 }
 
 .form-input:focus {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  transform: translateY(-1px);
+  background: #454545;
+  border-color: #fff;
+}
+
+.form-input:hover:not(:focus) {
+  border-color: #666;
 }
 
 .form-input.error {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
+  border-color: #e87c03;
 }
 
+/* =========================
+   에러 메시지
+========================= */
 .error-message {
-  font-family: 'Outfit', sans-serif;
+  display: block;
+  margin-top: 0.5rem;
   font-size: 13px;
-  color: #ef4444;
-  margin-top: -4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  color: #e87c03;
+  min-height: 20px;
+  line-height: 20px;
 }
 
-.error-message::before {
-  content: '⚠';
-  font-size: 14px;
-}
-
-/* Form Options */
+/* =========================
+   옵션
+========================= */
 .form-options {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-top: 4px;
-  flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #b3b3b3;
+  animation: fadeInUp 0.4s ease-out backwards;
+  animation-delay: 0.28s;
 }
 
-.form-options.full-width {
-  justify-content: flex-start;
+/* 전환 중일 때 */
+.signin-card.transitioning .form-options {
+  animation: none;
+  opacity: 0;
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
   user-select: none;
+  transition: color 0.2s ease;
+}
+
+.checkbox-label:hover .checkbox-text {
+  color: #fff;
 }
 
 .checkbox-label.full-width {
@@ -318,103 +342,132 @@
 }
 
 .checkbox-input {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
+  accent-color: #e50914;
   cursor: pointer;
-  accent-color: #2563eb;
+}
+
+.checkbox-input.error {
+  outline: 2px solid #e50914;
 }
 
 .checkbox-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.4;
+  color: #b3b3b3;
+  font-size: 13px;
 }
 
 .inline-link {
-  color: #3b82f6;
+  color: #fff;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: text-decoration 0.2s ease;
 }
 
 .inline-link:hover {
-  color: #60a5fa;
   text-decoration: underline;
 }
 
 .link-button {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #3b82f6;
   background: none;
   border: none;
+  color: #b3b3b3;
   cursor: pointer;
-  padding: 0;
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
   transition: color 0.2s ease;
 }
 
 .link-button:hover {
-  color: #60a5fa;
-  text-decoration: underline;
+  color: #fff;
 }
 
-/* Submit Button */
+/* =========================
+   제출 버튼
+========================= */
 .submit-button {
+  margin-top: 20px;
   width: 100%;
-  padding: 16px;
-  margin-top: 8px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #ffffff;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  height: 48px;
+  background: #e50914;
   border: none;
-  border-radius: 12px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-  position: relative;
-  overflow: hidden;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInUp 0.4s ease-out backwards;
+  animation-delay: 0.3s;
 }
 
-.submit-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
+/* 전환 중일 때 */
+.signin-card.transitioning .submit-button {
+  animation: none;
+  opacity: 0;
 }
 
-.submit-button:hover::before {
-  left: 100%;
+.submit-button:hover:not(:disabled) {
+  background: #f40612;
 }
 
-.submit-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-}
-
-.submit-button:active {
-  transform: translateY(0);
+.submit-button:active:not(:disabled) {
+  background: #c11119;
 }
 
 .submit-button:disabled {
-  opacity: 0.6;
+  background: #8c1d18;
   cursor: not-allowed;
-  transform: none;
+  opacity: 0.6;
 }
 
+/* =========================
+   푸터
+========================= */
+.card-footer {
+  margin-top: 28px;
+  text-align: left;
+  animation: fadeInUp 0.4s ease-out backwards;
+  animation-delay: 0.35s;
+}
+
+/* 전환 중일 때 */
+.signin-card.transitioning .card-footer {
+  animation: none;
+  opacity: 0;
+}
+
+.footer-text {
+  font-size: 14px;
+  color: #737373;
+}
+
+.toggle-button {
+  margin-left: 6px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: color 0.2s ease;
+}
+
+.toggle-button:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   로딩 스피너
+========================= */
 .loading-spinner {
-  display: inline-block;
   width: 20px;
   height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  border-top: 3px solid #fff;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -425,75 +478,19 @@
   }
 }
 
-/* Footer */
-.card-footer {
-  margin-top: 32px;
-  text-align: center;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* =========================
+   반응형 디자인
+========================= */
 
-.footer-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.toggle-button {
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #3b82f6;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.toggle-button::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: #3b82f6;
-  transition: width 0.3s ease;
-}
-
-.toggle-button:hover::after {
-  width: 100%;
-}
-
-.toggle-button:hover {
-  color: #60a5fa;
-}
-
-/* Responsive Design */
-@media (max-width: 640px) {
-  .signin-container {
-    padding: 16px;
-  }
-
+/* 태블릿 (768px 이하) */
+@media (max-width: 768px) {
   .signin-card {
-    max-width: 100%;
-    border-radius: 20px;
-  }
-
-  .card-inner {
-    padding: 36px 28px;
+    max-width: 400px;
+    padding: 50px 50px 35px;
   }
 
   .card-title {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   .card-subtitle {
@@ -501,56 +498,137 @@
   }
 
   .form-input {
-    padding: 12px 14px;
+    height: 48px;
     font-size: 14px;
-  }
-
-  .submit-button {
-    padding: 14px;
-    font-size: 14px;
-  }
-
-  .gradient-orb {
-    filter: blur(60px);
-  }
-
-  .orb-1 {
-    width: 300px;
-    height: 300px;
-  }
-
-  .orb-2 {
-    width: 350px;
-    height: 350px;
-  }
-
-  .orb-3 {
-    width: 250px;
-    height: 250px;
   }
 }
 
-@media (max-width: 400px) {
-  .card-inner {
-    padding: 28px 20px;
+/* 모바일 (500px 이하) */
+@media (max-width: 500px) {
+  .signin-container {
+    padding: 15px;
+  }
+
+  .signin-card {
+    max-width: 100%;
+    padding: 40px 30px;
+    border-radius: 0;
   }
 
   .card-title {
     font-size: 26px;
   }
 
+  .card-subtitle {
+    font-size: 12px;
+  }
+
+  .card-header {
+    margin-bottom: 24px;
+  }
+
+  .signin-form {
+    gap: 14px;
+  }
+
+  .form-input {
+    height: 46px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
   .form-options {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .submit-button {
+    height: 46px;
+    font-size: 15px;
+    margin-top: 16px;
+  }
+
+  .error-message {
+    font-size: 12px;
+  }
+
+  .footer-text,
+  .toggle-button {
+    font-size: 13px;
+  }
+
+  .orb-1,
+  .orb-2,
+  .orb-3 {
+    filter: blur(80px);
   }
 }
 
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+/* 소형 모바일 (360px 이하) */
+@media (max-width: 360px) {
+  .signin-card {
+    padding: 30px 20px;
   }
->>>>>>> 636ff70f304275f9eb024e8194fdd7aad234a293
+
+  .card-title {
+    font-size: 24px;
+  }
+
+  .form-input {
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .submit-button {
+    height: 44px;
+    font-size: 14px;
+  }
+}
+
+/* 가로 모드 (600px 이하) */
+@media (max-height: 600px) and (orientation: landscape) {
+  .signin-container {
+    padding: 15px;
+  }
+
+  .signin-card {
+    padding: 30px 40px;
+  }
+
+  .card-header {
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .card-subtitle {
+    font-size: 12px;
+  }
+
+  .signin-form {
+    gap: 12px;
+  }
+
+  .form-input {
+    height: 44px;
+  }
+
+  .submit-button {
+    margin-top: 12px;
+    height: 44px;
+  }
+
+  .card-footer {
+    margin-top: 20px;
+  }
+
+  .orb-1,
+  .orb-2,
+  .orb-3 {
+    display: none;
+  }
 }
