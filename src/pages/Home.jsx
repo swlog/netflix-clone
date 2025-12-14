@@ -1,215 +1,141 @@
-// // import React from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { 
+  getPopularMovies, 
+  getNowPlayingMovies, 
+  getMoviesByGenre,
+  GENRES 
+} from '../services/tmdb';
+import toast from 'react-hot-toast';
 
-// // function Home() {
-// //   return (
-// //     <div className="home-page">
-// //       <h1>홈</h1>
-// //       <section>
-// //         <h2>최신 영화</h2>
-// //         {/* 나중에 영화 목록 추가 */}
-// //       </section>
-// //       <section>
-// //         <h2>액션 영화</h2>
-// //         {/* 나중에 영화 목록 추가 */}
-// //       </section>
-// //     </div>
-// //   );
-// // }
-
-// // export default Home;
-
-// import React, { useState, useEffect } from 'react';
-// import { getNowPlayingMovies, getMoviesByGenre, GENRES } from '../services/tmdb';
-// import MovieCard from '../components/MovieCard';
-// import './Home.css';
-
-// function Home() {
-//   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
-//   const [actionMovies, setActionMovies] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     fetchMovies();
-//   }, []);
-
-//   const fetchMovies = async () => {
-//     try {
-//       setLoading(true);
-//       setError(null);
-
-//       // 최신 영화와 액션 영화를 동시에 가져오기
-//       const [nowPlayingData, actionData] = await Promise.all([
-//         getNowPlayingMovies(),
-//         getMoviesByGenre(GENRES.ACTION),
-//       ]);
-
-//       setNowPlayingMovies(nowPlayingData.results);
-//       setActionMovies(actionData.results);
-//     } catch (err) {
-//       setError('영화 정보를 불러오는데 실패했습니다.');
-//       console.error('영화 데이터 로딩 실패:', err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleWishlistToggle = (movie) => {
-//     console.log('찜하기 토글:', movie.title);
-//     // 나중에 localStorage에 저장하는 로직 추가
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="home-page">
-//         <div className="loading">로딩 중...</div>
-//       </div>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <div className="home-page">
-//         <div className="error">{error}</div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="home-page">
-//       <h1>홈</h1>
-
-//       {/* 최신 영화 섹션 */}
-//       <section className="movie-section">
-//         <h2>최신 영화</h2>
-//         <div className="movie-grid">
-//           {nowPlayingMovies.map((movie) => (
-//             <MovieCard
-//               key={movie.id}
-//               movie={movie}
-//               onWishlistToggle={handleWishlistToggle}
-//             />
-//           ))}
-//         </div>
-//       </section>
-
-//       {/* 액션 영화 섹션 */}
-//       <section className="movie-section">
-//         <h2>액션 영화</h2>
-//         <div className="movie-grid">
-//           {actionMovies.map((movie) => (
-//             <MovieCard
-//               key={movie.id}
-//               movie={movie}
-//               onWishlistToggle={handleWishlistToggle}
-//             />
-//           ))}
-//         </div>
-//       </section>
-//     </div>
-//   );
-// }
-
-// export default Home;
-
-import React, { useState, useEffect } from 'react';
-import { getNowPlayingMovies, getMoviesByGenre, GENRES } from '../services/tmdb';
-import Hero from '../components/Hero';
-import MovieCard from '../components/MovieCard';
-import './Home.css';
-
-function Home() {
+const Home = () => {
+  const [popularMovies, setPopularMovies] = useState([]);
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
   const [actionMovies, setActionMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [featuredMovie, setFeaturedMovie] = useState(null);
+  const [apiError, setApiError] = useState(null);
+  
+  // 중복 에러 토스트 방지
+  const hasShownError = useRef(false);
 
   useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        setLoading(true);
+        setApiError(null);
+
+        // 병렬로 영화 데이터 가져오기
+        const [popularData, nowPlayingData, actionData] = await Promise.all([
+          getPopularMovies(1),
+          getNowPlayingMovies(1),
+          getMoviesByGenre(GENRES.ACTION, 1),
+        ]);
+
+        setPopularMovies(popularData.results);
+        setNowPlayingMovies(nowPlayingData.results);
+        setActionMovies(actionData.results);
+        
+        // 성공 시 에러 플래그 리셋
+        hasShownError.current = false;
+        
+      } catch (error) {
+        console.error('영화 목록 로딩 실패:', error);
+        setApiError(error.message);
+        
+        // 에러 토스트를 한 번만 표시
+        if (!hasShownError.current) {
+          hasShownError.current = true;
+          
+          if (error.message.includes('유효하지 않은 TMDB API 키')) {
+            toast.error('유효하지 않은 TMDB API 키입니다. 올바른 API 키로 다시 가입해주세요.', {
+              duration: 5000,
+              position: 'top-center',
+              id: 'api-key-error', // 고유 ID로 중복 방지
+            });
+          } else {
+            toast.error('영화 정보를 불러올 수 없습니다.', {
+              duration: 4000,
+              position: 'top-center',
+              id: 'movie-fetch-error', // 고유 ID로 중복 방지
+            });
+          }
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchMovies();
   }, []);
 
-  const fetchMovies = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // 최신 영화와 액션 영화를 동시에 가져오기
-      const [nowPlayingData, actionData] = await Promise.all([
-        getNowPlayingMovies(),
-        getMoviesByGenre(GENRES.ACTION),
-      ]);
-
-      setNowPlayingMovies(nowPlayingData.results);
-      setActionMovies(actionData.results);
-      
-      // 첫 번째 영화를 Hero 배너로 사용
-      setFeaturedMovie(nowPlayingData.results[0]);
-    } catch (err) {
-      setError('영화 정보를 불러오는데 실패했습니다.');
-      console.error('영화 데이터 로딩 실패:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleWishlistToggle = (movie) => {
-    console.log('찜하기 토글:', movie.title);
-    // 나중에 localStorage에 저장하는 로직 추가
-  };
-
+  // 로딩 중
   if (loading) {
     return (
-      <div className="home-page">
-        <div className="loading">로딩 중...</div>
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>영화 정보를 불러오는 중...</p>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="home-page">
-        <div className="error">{error}</div>
-      </div>
-    );
-  }
-
+  // 영화 목록 표시
   return (
-    <div className="home-page">
-      {/* Hero 배너 추가 */}
-      <Hero movie={featuredMovie} />
+    <div className="home-container">
+      <header className="home-header">
+        <h1>🎬 영화 탐색</h1>
+      </header>
 
-      <div className="home-content">
-        {/* 최신 영화 섹션 */}
-        <section className="movie-section">
-          <h2>최신 영화</h2>
-          <div className="movie-grid">
-            {nowPlayingMovies.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                movie={movie}
-                onWishlistToggle={handleWishlistToggle}
+      {/* 인기 영화 */}
+      <section className="movie-section">
+        <h2>인기 영화</h2>
+        <div className="movie-grid">
+          {popularMovies.slice(0, 10).map((movie) => (
+            <div key={movie.id} className="movie-card">
+              <img 
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                alt={movie.title}
               />
-            ))}
-          </div>
-        </section>
+              <h3>{movie.title}</h3>
+              <p> {movie.vote_average.toFixed(1)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* 액션 영화 섹션 */}
-        <section className="movie-section">
-          <h2>액션 영화</h2>
-          <div className="movie-grid">
-            {actionMovies.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                movie={movie}
-                onWishlistToggle={handleWishlistToggle}
+      {/* 최신 영화 */}
+      <section className="movie-section">
+        <h2>최신 영화</h2>
+        <div className="movie-grid">
+          {nowPlayingMovies.slice(0, 10).map((movie) => (
+            <div key={movie.id} className="movie-card">
+              <img 
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                alt={movie.title}
               />
-            ))}
-          </div>
-        </section>
-      </div>
+              <h3>{movie.title}</h3>
+              <p> {movie.vote_average.toFixed(1)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 액션 영화 */}
+      <section className="movie-section">
+        <h2>액션 영화</h2>
+        <div className="movie-grid">
+          {actionMovies.slice(0, 10).map((movie) => (
+            <div key={movie.id} className="movie-card">
+              <img 
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                alt={movie.title}
+              />
+              <h3>{movie.title}</h3>
+              <p> {movie.vote_average.toFixed(1)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
-}
+};
 
 export default Home;
