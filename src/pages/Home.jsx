@@ -1,16 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
-import { 
+import tmdbService from '../services/tmdb';
+import MovieCard from '../components/MovieCard';
+import { useWishlist } from '../hooks/useWishlist';
+import toast from 'react-hot-toast';
+import './Home.css';
+
+// tmdbService에서 필요한 함수들 추출
+const { 
   getPopularMovies, 
   getNowPlayingMovies,
   getTopRatedMovies,
   getUpcomingMovies,
   getMoviesByGenre,
   GENRES 
-} from '../services/tmdb';
-import MovieCard from '../components/MovieCard';
-import { useWishlist } from '../hooks/useWishlist';
-import toast from 'react-hot-toast';
-import './Home.css';
+} = tmdbService;
 
 const Home = () => {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -133,7 +136,6 @@ const Home = () => {
     );
   }
 
-  // 영화 목록 표시
   return (
     <div className="home-container">
       {/* 히어로 섹션 */}
