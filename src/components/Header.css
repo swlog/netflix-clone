@@ -1,4 +1,4 @@
-/* Header-Option3.css - 그라데이션 색상 변화 */
+/* ================= Header Base ================= */
 
 .netflix-header {
   position: fixed;
@@ -7,27 +7,28 @@
   right: 0;
   height: 70px;
   z-index: 1000;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0));
+  transition: all 0.4s ease;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
 }
 
 .netflix-header.scrolled {
-  background: linear-gradient(135deg, 
-    rgba(229, 9, 20, 0.15) 0%, 
-    rgba(20, 20, 20, 0.95) 50%, 
-    rgba(0, 0, 0, 0.95) 100%
+  background: linear-gradient(
+    135deg,
+    rgba(229, 9, 20, 0.15),
+    rgba(20, 20, 20, 0.95)
   );
   box-shadow: 0 4px 20px rgba(229, 9, 20, 0.2);
 }
 
 .header-container {
-  max-width: 100%;
   height: 100%;
   padding: 0 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
+/* ================= Left ================= */
 
 .header-left {
   display: flex;
@@ -40,22 +41,10 @@
   font-weight: 900;
   color: #e50914;
   text-decoration: none;
-  letter-spacing: -1px;
-  transition: all 0.3s ease;
-  filter: drop-shadow(0 0 0 transparent);
-}
-
-.netflix-header.scrolled .netflix-logo {
-  filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.6));
-}
-
-.netflix-logo:hover {
-  opacity: 0.8;
 }
 
 .main-nav {
   display: flex;
-  align-items: center;
   gap: 20px;
 }
 
@@ -63,92 +52,111 @@
   color: #e5e5e5;
   text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 20px;
 }
 
 .nav-link:hover {
-  color: #ffffff;
   background: rgba(229, 9, 20, 0.2);
+  color: #fff;
 }
 
-.nav-link::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #e50914, transparent);
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover::before {
-  width: 80%;
-}
+/* ================= Right ================= */
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .profile-wrapper {
   display: flex;
   align-items: center;
-  gap: 15px;
-  position: relative;
+  gap: 10px;
 }
 
 .user-email {
-  color: #e5e5e5;
   font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.netflix-header.scrolled .user-email {
-  text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+  color: #e5e5e5;
 }
 
 .user-icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #e50914, #b20710);
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
   color: white;
-  box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.4);
 }
 
-.user-icon:hover {
-  background: linear-gradient(135deg, #ff0a1a 0%, #e50914 100%);
-  transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+/* ================= Signin ================= */
+
+.signin-link {
+  color: #fff;
+  background: linear-gradient(135deg, #e50914, #b20710);
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
 }
 
-.profile-menu {
-  position: absolute;
-  top: 45px;
+/* ================= Hamburger ================= */
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-btn span {
+  width: 22px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* ================= Mobile Menu ================= */
+
+.mobile-menu {
+  position: fixed;
+  top: 70px;
+  left: 0;
   right: 0;
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(0, 0, 0, 0.98) 100%);
-  border: 1px solid rgba(229, 9, 20, 0.3);
-  border-radius: 8px;
-  padding: 10px;
-  min-width: 150px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  animation: fadeIn 0.2s ease;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 20, 0.98),
+    rgba(0, 0, 0, 0.98)
+  );
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 999;
+  animation: slideDown 0.25s ease;
 }
 
-@keyframes fadeIn {
+.mobile-menu a {
+  color: #e5e5e5;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.mobile-logout {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(229, 9, 20, 0.6);
+  background: none;
+  color: #fff;
+  border-radius: 6px;
+}
+
+/* ================= Animation ================= */
+
+@keyframes slideDown {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -159,69 +167,22 @@
   }
 }
 
-.logout-btn {
-  width: 100%;
-  padding: 10px 15px;
-  background: none;
-  border: none;
-  color: #e5e5e5;
-  font-size: 14px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.3s ease;
-  border-radius: 4px;
-}
-
-.logout-btn:hover {
-  background: linear-gradient(90deg, rgba(229, 9, 20, 0.2), rgba(229, 9, 20, 0.1));
-  color: #ffffff;
-}
-
-.signin-link {
-  color: #e5e5e5;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #e50914 0%, #b20710 100%);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.signin-link:hover {
-  background: linear-gradient(135deg, #ff0a1a 0%, #e50914 100%);
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(229, 9, 20, 0.4);
-}
-
-@media (max-width: 1024px) {
-  .header-container {
-    padding: 0 30px;
-  }
-  
-  .header-left {
-    gap: 25px;
-  }
-  
-  .main-nav {
-    gap: 15px;
-  }
-}
+/* ================= Responsive ================= */
 
 @media (max-width: 768px) {
-  .header-container {
-    padding: 0 20px;
-  }
-  
-  .netflix-logo {
-    font-size: 24px;
-  }
-  
   .main-nav {
     display: none;
   }
-  
+
   .user-email {
     display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .header-container {
+    padding: 0 20px;
   }
 }
