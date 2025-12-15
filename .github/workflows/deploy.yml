@@ -1,15 +1,15 @@
 name: Deploy to GitHub Pages
 
 on:
-  # 'main' 브랜치에 푸시가 발생했을 때 워크플로우를 실행합니다.
   push:
     branches:
       - main
-  
-  # 수동 실행을 허용합니다.
   workflow_dispatch:
 
-# 이전 배포 작업이 완료될 때까지 새 작업이 시작되는 것을 방지합니다.
+# 💡 [필수] 권한 설정
+permissions:
+  contents: write # 이 권한이 gh-pages 브랜치에 푸시하는 것을 허용합니다.
+
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,9 +17,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: 
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: ⬇️ Checkout repository
@@ -28,26 +25,18 @@ jobs:
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 이전에 Node.js 20.0.0 이상 요구로 확인됨
+          node-version: '20'
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        # 만약 이전에 `npm ci` 관련 오류를 로컬에서 해결하지 못했다면, 
-        # 임시로 `npm install`을 사용하여 진행하고 로컬에서 lock 파일을 업데이트하세요.
-        run: npm install 
+        run: npm install
 
-      - name: 👤 Configure Git User
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-      - name: 🚀 Deploy to GitHub Pages using gh-pages
-        # `deploy` 스크립트 실행 (내부적으로 build -> gh-pages 푸시)
-        run: npm run deploy
-        env:
-          # gh-pages 패키지가 배포를 위해 사용할 토큰 설정
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: 🔗 Setup GitHub Pages URL
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: 🏗️ Build project
+        run: npm run build
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
