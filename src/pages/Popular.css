@@ -1,6 +1,285 @@
-/* Popular.css */
-.popular-page p {
-  color: #b3b3b3;
-  margin-bottom: 30px;
+/* =========================================================
+   Global Layout Variables
+========================================================= */
+:root {
+  --global-header-height: 72px;
 }
 
+/* =========================================================
+   Page Layout
+========================================================= */
+.popular-page {
+  min-height: calc(100vh - var(--global-header-height));
+  background: var(--bg-dark);
+  color: var(--text-primary);
+
+  padding-top: calc(var(--global-header-height) + var(--spacing-md));
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+}
+
+/* =========================================================
+   TABLE MODE (스크롤 ❌, 5 x 2 고정)
+========================================================= */
+.popular-page.table-mode {
+  height: calc(100vh - var(--global-header-height));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.popular-page.table-mode .movies-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.popular-page.table-mode .movies-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 가로 5 */
+  grid-template-rows: repeat(2, auto);   /* 세로 2 */
+  gap: 28px;                             /* 카드 간격 */
+  padding: 12px 0;
+  align-content: start;
+  overflow: hidden;
+}
+
+/* =========================================================
+   INFINITE MODE (스크롤 ⭕)
+========================================================= */
+.popular-page.infinite-mode {
+  min-height: calc(100vh - var(--global-header-height));
+  overflow-y: auto;
+}
+
+/* =========================================================
+   Page Header
+========================================================= */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.header-left i {
+  font-size: 2rem;
+  color: var(--netflix-red);
+}
+
+.header-left h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* =========================================================
+   View Toggle
+========================================================= */
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-medium);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+  background: var(--netflix-red);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+/* =========================================================
+   Movies Container
+========================================================= */
+.movies-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* =========================================================
+   Movie Item Animation
+========================================================= */
+.movie-item {
+  opacity: 0;
+  animation: fadeUp 0.4s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   Pagination (TABLE MODE)
+========================================================= */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: var(--spacing-lg) 0;
+}
+
+/* 이전 / 다음 버튼 */
+.page-btn {
+  min-width: 80px;
+  padding: 10px 16px;
+  background: #1f1f1f;
+  color: #ffffff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #2a2a2a;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 숫자 영역 */
+.page-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+/* 숫자 기본 */
+.page-num {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #1f1f1f;
+  color: #b3b3b3;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 숫자 hover */
+.page-num:hover:not(.active) {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+/* 활성 숫자 */
+.page-num.active {
+  background: #e50914;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* =========================================================
+   Infinite Scroll
+========================================================= */
+.infinite-loading {
+  padding: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.loading-spinner i {
+  font-size: 2.5rem;
+  color: var(--netflix-red);
+}
+
+/* =========================================================
+   Scroll To Top Button
+========================================================= */
+.scroll-top-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--netflix-red);
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* =========================================================
+   Responsive (무한 스크롤 전용)
+========================================================= */
+@media (max-width: 1200px) {
+  .popular-page.table-mode .movies-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .popular-page.table-mode .movies-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .popular-page.table-mode .movies-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+  }
+}
