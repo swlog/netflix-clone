@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+# 💡 [필수] 권한 설정
+permissions:
+  contents: write # 이 권한이 gh-pages 브랜치에 푸시하는 것을 허용합니다.
+
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,26 +25,18 @@ jobs:
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Node.js 20 유지
+          node-version: '20'
           cache: 'npm'
 
       - name: 📦 Install dependencies
         run: npm install
 
-      # 💡 [핵심] gh-pages 패키지를 사용하지 않고, 
-      # 💡 액션이 직접 배포하므로 Git Author 설정 스텝은 이제 필요 없습니다. (삭제)
-
       - name: 🏗️ Build project
-        # 배포 액션에 전달하기 위해 빌드만 실행
         run: npm run build
 
-      - name: 🚀 Deploy to GitHub Pages using peaceiris/actions-gh-pages
-        # 가장 안정적인 gh-pages 배포 전용 액션 사용
+      - name: 🚀 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          # 기본 GITHUB_TOKEN을 사용하여 인증
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # 빌드 결과물이 있는 폴더 지정
           publish_dir: ./build
-          # 배포할 브랜치를 gh-pages로 지정
           publish_branch: gh-pages
