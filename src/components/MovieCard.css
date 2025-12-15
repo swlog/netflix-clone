@@ -1,63 +1,108 @@
+/* =========================================================
+   Movie Card Base
+========================================================= */
+/* ⭐ 카드 전체 높이 고정 */
 .movie-card {
   position: relative;
+  width: 100%;
+  max-width: 260px;
+  height: 440px;  /* ⭐ 추가: 전체 높이 고정 */
+  margin: 0 auto;
+
+  background: rgba(20, 20, 20, 0.85);
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(20, 20, 20, 0.8);
-  backdrop-filter: blur(10px);
+
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  height: 100%;
+  backdrop-filter: blur(10px);
+
   display: flex;
   flex-direction: column;
+
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
+/* ⭐ info 영역도 고정 높이 */
+.movie-info {
+  padding: 12px;
+  background: rgba(10, 10, 10, 0.85);
+  
+  height: 80px;  /* ⭐ 추가: 고정 높이 */
+  
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  
+  overflow: hidden;  /* ⭐ 추가: 넘치는 텍스트 숨김 */
+}
+/* =========================================================
+   Hover (기본)
+========================================================= */
 .movie-card:hover {
-  transform: scale(1.08) translateY(-8px);
+  transform: scale(1.05);
   border-color: rgba(229, 9, 20, 0.6);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(229, 9, 20, 0.3),
-    inset 0 0 20px rgba(229, 9, 20, 0.1);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(229, 9, 20, 0.25);
   z-index: 10;
 }
 
-/* 위시리스트에 있는 카드 */
+/* 테이블 뷰에서는 hover 축소 (레이아웃 보호) */
+.table-mode .movie-card:hover {
+  transform: scale(1.02);
+}
+
+/* =========================================================
+   Wishlist State
+========================================================= */
 .movie-card.in-wishlist {
   border-color: rgba(229, 9, 20, 0.5);
-  background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(20, 20, 20, 0.8));
+  background: linear-gradient(
+    135deg,
+    rgba(229, 9, 20, 0.12),
+    rgba(20, 20, 20, 0.85)
+  );
 }
 
 .movie-card.in-wishlist::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, transparent, rgba(229, 9, 20, 0.1));
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(229, 9, 20, 0.15));
   pointer-events: none;
   z-index: 1;
 }
 
-/* 위시리스트 버튼 */
+/* =========================================================
+   Wishlist Button
+========================================================= */
 .wishlist-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
+
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  cursor: pointer;
-  z-index: 20;
+
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+
+  cursor: pointer;
+  z-index: 20;
+
+  transition: all 0.25s ease;
+}
+
+.wishlist-btn i {
+  font-size: 16px;
+  color: #fff;
 }
 
 .wishlist-btn:hover {
@@ -66,65 +111,41 @@
   transform: scale(1.1);
 }
 
-.wishlist-btn i {
-  color: #fff;
-  font-size: 18px;
-  transition: all 0.3s ease;
-}
-
 .wishlist-btn.active {
   background: rgba(229, 9, 20, 1);
   border-color: rgba(229, 9, 20, 1);
-  animation: heartBeat 0.5s ease;
 }
 
-.wishlist-btn i.active {
-  color: #fff;
-  animation: heartPulse 0.5s ease;
-}
-
-@keyframes heartBeat {
-  0%, 100% { transform: scale(1); }
-  25% { transform: scale(1.3); }
-  50% { transform: scale(1.1); }
-}
-
-@keyframes heartPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-/* 포스터 */
+/* =========================================================
+   Poster (비율 고정 – 핵심)
+========================================================= */
 .movie-poster {
   position: relative;
   width: 100%;
-  padding-top: 150%; /* 2:3 비율 */
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
 }
 
 .movie-poster img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  display: block;
+  transition: transform 0.4s ease, filter 0.4s ease;
 }
 
 .movie-card:hover .movie-poster img {
-  transform: scale(1.1);
+  transform: scale(1.08);
   filter: brightness(0.7);
 }
 
-/* 이미지 스켈레톤 로딩 */
+/* =========================================================
+   Skeleton
+========================================================= */
 .image-skeleton {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: linear-gradient(
     90deg,
     rgba(40, 40, 40, 0.8) 25%,
@@ -132,15 +153,7 @@
     rgba(40, 40, 40, 0.8) 75%
   );
   background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-skeleton i {
-  font-size: 48px;
-  color: rgba(255, 255, 255, 0.2);
+  animation: shimmer 1.8s infinite;
 }
 
 @keyframes shimmer {
@@ -148,25 +161,25 @@
   100% { background-position: -200% 0; }
 }
 
-/* 오버레이 */
+/* =========================================================
+   Overlay
+========================================================= */
 .movie-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.7) 50%,
-    rgba(0, 0, 0, 0.95) 100%
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.95)
   );
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+
   display: flex;
   align-items: flex-end;
-  padding: 20px;
-  z-index: 5;
+  padding: 16px;
 }
 
 .movie-card:hover .movie-overlay {
@@ -175,157 +188,101 @@
 
 .overlay-content {
   width: 100%;
-  transform: translateY(20px);
-  transition: transform 0.4s ease;
+  transform: translateY(16px);
+  transition: transform 0.35s ease;
 }
 
 .movie-card:hover .overlay-content {
   transform: translateY(0);
 }
 
+/* =========================================================
+   Overlay Content
+========================================================= */
 .movie-title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  margin: 0 0 12px 0;
   color: #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-bottom: 8px;
   line-height: 1.3;
 }
 
 .movie-meta {
   display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 2px solid;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.rating i {
-  font-size: 14px;
-  color: #ffd700;
-}
-
+.rating,
 .release-date {
   display: flex;
   align-items: center;
   gap: 5px;
   padding: 5px 10px;
+  border-radius: 18px;
+  font-size: 0.85rem;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  font-size: 0.85rem;
-  color: #b3b3b3;
 }
 
-.release-date i {
-  font-size: 12px;
+.rating i {
+  color: #ffd700;
 }
 
-.movie-overview {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: #d4d4d4;
-  margin: 10px 0;
-  text-align: justify;
-  max-height: 80px;
-  overflow: hidden;
-}
-
-.genres {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 12px 0;
-}
-
-.genre-tag {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(229, 9, 20, 0.1));
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(229, 9, 20, 0.4);
-  border-radius: 15px;
-  font-size: 0.75rem;
-  color: #fff;
-  font-weight: 500;
-}
-
-.genre-tag i {
-  font-size: 10px;
-}
-
+/* =========================================================
+   Play Button
+========================================================= */
 .play-btn {
   width: 100%;
   padding: 10px;
-  margin-top: 12px;
+  margin-top: 10px;
+
   background: linear-gradient(135deg, #e50914, #b20710);
   border: none;
   border-radius: 8px;
-  color: white;
+
+  color: #fff;
   font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
+  font-size: 0.9rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+  gap: 6px;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .play-btn:hover {
   background: linear-gradient(135deg, #f40612, #e50914);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
 }
 
-.play-btn i {
-  font-size: 14px;
-}
-
-/* 카드 하단 정보 */
+/* =========================================================
+   Bottom Info (기본 표시 영역)
+========================================================= */
 .movie-info {
   padding: 12px;
-  background: rgba(10, 10, 10, 0.8);
-  flex-grow: 1;
+  background: rgba(10, 10, 10, 0.85);
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 6px;
 }
 
 .movie-title-bottom {
   font-size: 0.95rem;
   font-weight: 600;
-  margin: 0 0 8px 0;
   color: #fff;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  .line-clamp-2 {
-  display: -webkit-box;
-  overflow: hidden;
+  line-height: 1.4;
 
+  display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  overflow: hidden;
 
-  line-clamp: 2; /* ← 표준 속성 (경고 해결) */
-}
-  -webkit-box-orient: vertical;
-  line-height: 1.4;
+  line-clamp: 2;
 }
 
 .rating-bottom {
@@ -337,65 +294,28 @@
 }
 
 .rating-bottom i {
-  font-size: 12px;
   color: #ffd700;
 }
 
-/* 반응형 */
+/* =========================================================
+   Responsive
+========================================================= */
 @media (max-width: 768px) {
+  .movie-card {
+    max-width: 220px;
+  }
+
   .movie-card:hover {
-    transform: scale(1.05) translateY(-5px);
-  }
-
-  .wishlist-btn {
-    width: 35px;
-    height: 35px;
-  }
-
-  .wishlist-btn i {
-    font-size: 16px;
-  }
-
-  .movie-title {
-    font-size: 1rem;
-  }
-
-  .movie-overview {
-    font-size: 0.8rem;
-    max-height: 60px;
-  }
-
-  .play-btn {
-    font-size: 0.85rem;
-    padding: 8px;
+    transform: scale(1.03);
   }
 }
 
 @media (max-width: 480px) {
+  .movie-card {
+    max-width: 200px;
+  }
+
   .movie-card:hover {
-    transform: scale(1.03) translateY(-3px);
-  }
-
-  .overlay-content {
-    padding: 10px;
-  }
-
-  .movie-meta {
-    gap: 8px;
-  }
-
-  .rating,
-  .release-date {
-    font-size: 0.75rem;
-    padding: 4px 8px;
-  }
-
-  .genres {
-    gap: 6px;
-  }
-
-  .genre-tag {
-    font-size: 0.7rem;
-    padding: 3px 8px;
+    transform: scale(1.02);
   }
 }
