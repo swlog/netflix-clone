@@ -60,10 +60,13 @@ const Popular = () => {
 
   /* ==================== 테이블 뷰 표시 (⭐ 수정됨) ==================== */
   const displayedMovies = useMemo(() => {
-    // ⭐ 테이블 뷰: 현재 로드된 영화 모두 표시 (API가 20개씩 반환)
+    if (viewMode === VIEW_MODES.TABLE) {
+      // ⭐ 테이블 뷰: 5개만 표시
+      return movies.slice(0, TABLE_PAGE_SIZE);
+    }
     // ⭐ 무한 스크롤: 누적된 모든 영화 표시
     return movies;
-  }, [movies]);
+  }, [movies, viewMode]);
 
   /* ==================== 무한 스크롤 ==================== */
   useEffect(() => {
