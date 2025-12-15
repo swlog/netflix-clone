@@ -334,7 +334,7 @@ const SignIn = () => {
                         errors.agreeTerms ? "error" : ""
                       }`}
                     />
-                    <span className="checkbox-text">이용약관에 동의합니다람쥐구멍</span>
+                    <span className="checkbox-text">이용약관에 동의합니다.</span>
                   </label>
                   <span className="error-message">
                     {submitted && errors.agreeTerms ? errors.agreeTerms : ""}
