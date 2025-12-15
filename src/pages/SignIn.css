@@ -313,7 +313,7 @@
   align-items: center;
   margin-top: 6px;
   font-size: 13px;
-  color: #b3b3b3;
+  /* color: #b3b3b3; */
   animation: fadeInUp 0.4s ease-out backwards;
   animation-delay: 0.28s;
 }
@@ -353,12 +353,13 @@
 }
 
 .checkbox-text {
-  color: #b3b3b3;
+  /* color: #b3b3b3; */
   font-size: 13px;
 }
 
 .inline-link {
   color: #fff;
+  background-color: none;
   text-decoration: none;
   transition: text-decoration 0.2s ease;
 }
