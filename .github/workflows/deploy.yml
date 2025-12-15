@@ -1,51 +1,50 @@
 name: Deploy to GitHub Pages
 
 on:
-  # 'main' 브랜치에 푸시가 발생했을 때 워크플로우를 실행합니다.
   push:
-    branches:
-      - main
-  
-  # 수동 실행을 허용합니다.
+    branches: [main]
   workflow_dispatch:
 
-# 이전 배포 작업이 완료될 때까지 새 작업이 시작되는 것을 방지합니다.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
+  group: "pages"
   cancel-in-progress: true
-  group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: 
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: ⬇️ Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      
-      # gh-pages 패키지 사용 시 SSH 키가 필요할 수 있으므로 권장되는 설정입니다.
-      # Deploy key를 사용하지 않고 기본 GITHUB_TOKEN을 사용하는 경우 생략 가능합니다.
-      # 이 워크플로우는 기본 GITHUB_TOKEN을 사용하도록 설정됩니다.
 
-      - name: ⚙️ Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 사용 중인 Node.js 버전을 지정하세요.
-          cache: 'npm'
+          node-version: 18
+          cache: npm
 
-      - name: 📦 Install dependencies
-        run: npm install
+      - name: Install
+        run: npm ci
 
-      - name: 🚀 Deploy to GitHub Pages using gh-pages
-        # `deploy` 스크립트를 실행합니다. (이는 내부적으로 `predeploy`(build)와 `deploy`(gh-pages -d build)를 실행합니다.)
-        run: npm run deploy
-        env:
-          # gh-pages 패키지가 배포를 위해 사용할 토큰을 설정합니다.
-          # GITHUB_TOKEN은 GitHub Actions가 기본적으로 제공하는 토큰입니다.
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: 🔗 Setup GitHub Pages URL
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # 배포 URL을 환경에 설정합니다.
+        uses: actions/deploy-pages@v4
