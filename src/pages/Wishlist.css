@@ -549,6 +549,7 @@
   background: rgba(40, 40, 40, 0.8);
   border-radius: 10px;
   outline: none;
+  appearance: none;
   -webkit-appearance: none;
   margin-bottom: 8px;
 }
