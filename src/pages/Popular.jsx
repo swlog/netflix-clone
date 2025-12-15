@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import tmdbService from '../services/tmdb';
-import MovieCard from '../components/MovieCard';
-import { useWishlist } from '../hooks/useWishlist';
-import toast from 'react-hot-toast';
-import './Popular.css';
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import tmdbService from "../services/tmdb";
+import MovieCard from "../components/MovieCard";
+import { useWishlist } from "../hooks/useWishlist";
+import toast from "react-hot-toast";
+import "./Popular.css";
 
 const VIEW_MODES = {
-  TABLE: 'table',
-  INFINITE: 'infinite',
+  TABLE: "table",
+  INFINITE: "infinite",
 };
 
 const TABLE_PAGE_SIZE = 5; // ⭐ 페이지당 5개
@@ -28,22 +28,28 @@ const Popular = () => {
   const loadingRef = useRef(null);
 
   /* ==================== 데이터 fetch ==================== */
-  const fetchMovies = useCallback(async (page, append = false) => {
-    try {
-      append ? setLoadingMore(true) : setLoading(true);
+  const fetchMovies = useCallback(
+    async (page, append = false) => {
+      try {
+        // ⭐ TABLE 뷰에서는 loading 사용 안 함
+        if (viewMode === VIEW_MODES.INFINITE) {
+          append ? setLoadingMore(true) : setLoading(true);
+        }
 
-      const data = await tmdbService.getPopularMovies(page);
-      const results = data.results || [];
+        const data = await tmdbService.getPopularMovies(page);
+        const results = data.results || [];
 
-      setMovies(prev => (append ? [...prev, ...results] : results));
-      setTotalPages(Math.min(data.total_pages || 1, 500));
-    } catch (e) {
-      toast.error('영화 정보를 불러올 수 없습니다.');
-    } finally {
-      setLoading(false);
-      setLoadingMore(false);
-    }
-  }, []);
+        setMovies((prev) => (append ? [...prev, ...results] : results));
+        setTotalPages(Math.min(data.total_pages || 1, 500));
+      } catch (e) {
+        toast.error("영화 정보를 불러올 수 없습니다.");
+      } finally {
+        setLoading(false);
+        setLoadingMore(false);
+      }
+    },
+    [viewMode]
+  );
 
   /* ==================== 초기 로드 ==================== */
   useEffect(() => {
@@ -73,7 +79,7 @@ const Popular = () => {
     if (viewMode !== VIEW_MODES.INFINITE || loading) return;
 
     observerRef.current = new IntersectionObserver(
-      entries => {
+      (entries) => {
         if (
           entries[0].isIntersecting &&
           !loadingMore &&
@@ -84,7 +90,7 @@ const Popular = () => {
           fetchMovies(next, true);
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: "200px" }
     );
 
     if (loadingRef.current) {
@@ -99,24 +105,24 @@ const Popular = () => {
     if (viewMode !== VIEW_MODES.INFINITE) return;
 
     const onScroll = () => setShowTopButton(window.scrollY > 500);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, [viewMode]);
 
   /* ==================== 핸들러 ==================== */
-  const handlePageChange = page => {
+  const handlePageChange = (page) => {
     setCurrentPage(page);
     fetchMovies(page); // ⭐ 새로운 페이지 데이터 fetch
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleWishlist = movie => {
+  const handleWishlist = (movie) => {
     const added = toggleWishlist(movie);
     toast(
       added
         ? `${movie.title}을(를) 위시리스트에 추가`
         : `${movie.title}을(를) 위시리스트에서 제거`,
-      { position: 'bottom-right' }
+      { position: "bottom-right" }
     );
   };
 
@@ -128,13 +134,13 @@ const Popular = () => {
         <h1>대세 콘텐츠</h1>
         <div className="view-toggle">
           <button
-            className={viewMode === VIEW_MODES.TABLE ? 'active' : ''}
+            className={viewMode === VIEW_MODES.TABLE ? "active" : ""}
             onClick={() => setViewMode(VIEW_MODES.TABLE)}
           >
             테이블 뷰
           </button>
           <button
-            className={viewMode === VIEW_MODES.INFINITE ? 'active' : ''}
+            className={viewMode === VIEW_MODES.INFINITE ? "active" : ""}
             onClick={() => setViewMode(VIEW_MODES.INFINITE)}
           >
             무한 스크롤
@@ -148,7 +154,7 @@ const Popular = () => {
           <div className="loading-spinner">불러오는 중...</div>
         ) : (
           <div className="movies-grid">
-            {displayedMovies.map(movie => (
+            {displayedMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
@@ -186,7 +192,7 @@ const Popular = () => {
                 return (
                   <button
                     key={page}
-                    className={page === currentPage ? 'active' : ''}
+                    className={page === currentPage ? "active" : ""}
                     onClick={() => handlePageChange(page)}
                   >
                     {page}
@@ -210,7 +216,7 @@ const Popular = () => {
       {viewMode === VIEW_MODES.INFINITE && showTopButton && (
         <button
           className="scroll-top-btn"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           ↑
         </button>
