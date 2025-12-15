@@ -25,27 +25,29 @@ jobs:
       - name: ⬇️ Checkout repository
         uses: actions/checkout@v4
       
-      # gh-pages 패키지 사용 시 SSH 키가 필요할 수 있으므로 권장되는 설정입니다.
-      # Deploy key를 사용하지 않고 기본 GITHUB_TOKEN을 사용하는 경우 생략 가능합니다.
-      # 이 워크플로우는 기본 GITHUB_TOKEN을 사용하도록 설정됩니다.
-
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # 사용 중인 Node.js 버전을 지정하세요.
+          node-version: '20' # 이전에 Node.js 20.0.0 이상 요구로 확인됨
           cache: 'npm'
 
       - name: 📦 Install dependencies
-        run: npm install
+        # 만약 이전에 `npm ci` 관련 오류를 로컬에서 해결하지 못했다면, 
+        # 임시로 `npm install`을 사용하여 진행하고 로컬에서 lock 파일을 업데이트하세요.
+        run: npm install 
 
+      - name: 👤 Configure Git User
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
       - name: 🚀 Deploy to GitHub Pages using gh-pages
-        # `deploy` 스크립트를 실행합니다. (이는 내부적으로 `predeploy`(build)와 `deploy`(gh-pages -d build)를 실행합니다.)
+        # `deploy` 스크립트 실행 (내부적으로 build -> gh-pages 푸시)
         run: npm run deploy
         env:
-          # gh-pages 패키지가 배포를 위해 사용할 토큰을 설정합니다.
-          # GITHUB_TOKEN은 GitHub Actions가 기본적으로 제공하는 토큰입니다.
+          # gh-pages 패키지가 배포를 위해 사용할 토큰 설정
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: 🔗 Setup GitHub Pages URL
         id: deployment
-        uses: actions/deploy-pages@v4 # 배포 URL을 환경에 설정합니다.
+        uses: actions/deploy-pages@v4
