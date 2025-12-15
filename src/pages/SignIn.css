@@ -12,8 +12,6 @@
 /* =========================
    컨테이너
 ========================= */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-
 .signin-container {
   position: relative;
   min-height: 100vh;
