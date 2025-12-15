@@ -134,13 +134,14 @@
    Pagination (⭐ TABLE MODE - 개선됨)
 ========================================================= */
 .pagination {
-  margin-top: px;
+  margin-top: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
   padding: 20px 0;
 }
+
 
 .pagination-numbers {
   display: flex;

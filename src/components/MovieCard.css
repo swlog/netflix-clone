@@ -1,10 +1,12 @@
 /* =========================================================
    Movie Card Base
 ========================================================= */
+/* ⭐ 카드 전체 높이 고정 */
 .movie-card {
   position: relative;
   width: 100%;
   max-width: 260px;
+  height: 440px;  /* ⭐ 추가: 전체 높이 고정 */
   margin: 0 auto;
 
   background: rgba(20, 20, 20, 0.85);
@@ -21,6 +23,19 @@
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
+/* ⭐ info 영역도 고정 높이 */
+.movie-info {
+  padding: 12px;
+  background: rgba(10, 10, 10, 0.85);
+  
+  height: 80px;  /* ⭐ 추가: 고정 높이 */
+  
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  
+  overflow: hidden;  /* ⭐ 추가: 넘치는 텍스트 숨김 */
+}
 /* =========================================================
    Hover (기본)
 ========================================================= */
