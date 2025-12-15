@@ -55,6 +55,14 @@ const Search = () => {
   const [maxYear, setMaxYear] = useState(new Date().getFullYear());
   const [sortBy, setSortBy] = useState('popularity.desc');
 
+  // 아코디언 상태
+  const [accordionState, setAccordionState] = useState({
+    sort: true,
+    genre: true,
+    rating: false,
+    year: false,
+  });
+
   const { isInWishlist, toggleWishlist } = useWishlist();
 
   const observerRef = useRef(null);
@@ -226,6 +234,14 @@ const Search = () => {
     fetchMovies(1);
   };
 
+  // 아코디언 토글
+  const toggleAccordion = (section) => {
+    setAccordionState((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
   // 페이지네이션 번호
   const getPaginationNumbers = () => {
     const maxButtons = 5;
@@ -318,95 +334,127 @@ const Search = () => {
             </button>
           </div>
 
-          {/* 정렬 */}
-          <div className="filter-section">
-            <label className="filter-label">
-              <i className="fas fa-sort"></i>
-              정렬
-            </label>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="filter-select"
+          {/* 정렬 - 아코디언 */}
+          <div className="filter-section accordion-section">
+            <div 
+              className="filter-label accordion-header"
+              onClick={() => toggleAccordion('sort')}
             >
-              {SORT_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* 장르 */}
-          <div className="filter-section">
-            <label className="filter-label">
-              <i className="fas fa-tags"></i>
-              장르
-            </label>
-            <div className="genre-grid">
-              {GENRES.map((genre) => (
-                <button
-                  key={genre.id}
-                  className={`genre-btn ${
-                    selectedGenres.includes(genre.id) ? 'active' : ''
-                  }`}
-                  onClick={() => handleGenreToggle(genre.id)}
-                >
-                  <i className={`fas ${genre.icon}`}></i>
-                  {genre.name}
-                </button>
-              ))}
+              <span className="label-text">
+                <i className="fas fa-sort"></i>
+                정렬
+              </span>
+              <i className={`fas fa-chevron-${accordionState.sort ? 'up' : 'down'} accordion-icon`}></i>
+            </div>
+            <div className={`accordion-content ${accordionState.sort ? 'open' : ''}`}>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="filter-select"
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {/* 평점 */}
-          <div className="filter-section">
-            <label className="filter-label">
-              <i className="fas fa-star"></i>
-              최소 평점: {minRating.toFixed(1)}
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="10"
-              step="0.5"
-              value={minRating}
-              onChange={(e) => setMinRating(Number(e.target.value))}
-              className="filter-range"
-            />
-            <div className="range-labels">
-              <span>0</span>
-              <span>5</span>
-              <span>10</span>
+          {/* 장르 - 아코디언 */}
+          <div className="filter-section accordion-section">
+            <div 
+              className="filter-label accordion-header"
+              onClick={() => toggleAccordion('genre')}
+            >
+              <span className="label-text">
+                <i className="fas fa-tags"></i>
+                장르 {selectedGenres.length > 0 && `(${selectedGenres.length})`}
+              </span>
+              <i className={`fas fa-chevron-${accordionState.genre ? 'up' : 'down'} accordion-icon`}></i>
+            </div>
+            <div className={`accordion-content ${accordionState.genre ? 'open' : ''}`}>
+              <div className="genre-grid">
+                {GENRES.map((genre) => (
+                  <button
+                    key={genre.id}
+                    className={`genre-btn ${
+                      selectedGenres.includes(genre.id) ? 'active' : ''
+                    }`}
+                    onClick={() => handleGenreToggle(genre.id)}
+                  >
+                    <i className={`fas ${genre.icon}`}></i>
+                    {genre.name}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* 개봉년도 */}
-          <div className="filter-section">
-            <label className="filter-label">
-              <i className="fas fa-calendar"></i>
-              개봉년도
-            </label>
-            <div className="year-inputs">
+          {/* 평점 - 아코디언 */}
+          <div className="filter-section accordion-section">
+            <div 
+              className="filter-label accordion-header"
+              onClick={() => toggleAccordion('rating')}
+            >
+              <span className="label-text">
+                <i className="fas fa-star"></i>
+                최소 평점: {minRating.toFixed(1)}
+              </span>
+              <i className={`fas fa-chevron-${accordionState.rating ? 'up' : 'down'} accordion-icon`}></i>
+            </div>
+            <div className={`accordion-content ${accordionState.rating ? 'open' : ''}`}>
               <input
-                type="number"
-                min="1900"
-                max={new Date().getFullYear()}
-                value={minYear}
-                onChange={(e) => setMinYear(Number(e.target.value))}
-                className="year-input"
-                placeholder="시작"
+                type="range"
+                min="0"
+                max="10"
+                step="0.5"
+                value={minRating}
+                onChange={(e) => setMinRating(Number(e.target.value))}
+                className="filter-range"
               />
-              <span className="year-separator">~</span>
-              <input
-                type="number"
-                min="1900"
-                max={new Date().getFullYear()}
-                value={maxYear}
-                onChange={(e) => setMaxYear(Number(e.target.value))}
-                className="year-input"
-                placeholder="끝"
-              />
+              <div className="range-labels">
+                <span>0</span>
+                <span>5</span>
+                <span>10</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 개봉년도 - 아코디언 */}
+          <div className="filter-section accordion-section">
+            <div 
+              className="filter-label accordion-header"
+              onClick={() => toggleAccordion('year')}
+            >
+              <span className="label-text">
+                <i className="fas fa-calendar"></i>
+                개봉년도 ({minYear} ~ {maxYear})
+              </span>
+              <i className={`fas fa-chevron-${accordionState.year ? 'up' : 'down'} accordion-icon`}></i>
+            </div>
+            <div className={`accordion-content ${accordionState.year ? 'open' : ''}`}>
+              <div className="year-inputs">
+                <input
+                  type="number"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                  value={minYear}
+                  onChange={(e) => setMinYear(Number(e.target.value))}
+                  className="year-input"
+                  placeholder="시작"
+                />
+                <span className="year-separator">~</span>
+                <input
+                  type="number"
+                  min="1900"
+                  max={new Date().getFullYear()}
+                  value={maxYear}
+                  onChange={(e) => setMaxYear(Number(e.target.value))}
+                  className="year-input"
+                  placeholder="끝"
+                />
+              </div>
             </div>
           </div>
         </aside>
