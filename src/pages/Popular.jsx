@@ -10,7 +10,7 @@ const VIEW_MODES = {
   INFINITE: 'infinite',
 };
 
-const TABLE_PAGE_SIZE = 10;
+const TABLE_PAGE_SIZE = 5; // ⭐ 페이지당 5개
 
 const Popular = () => {
   /* ==================== 상태 ==================== */
@@ -58,13 +58,12 @@ const Popular = () => {
     window.scrollTo({ top: 0 });
   }, [viewMode, fetchMovies]);
 
-  /* ==================== 테이블 뷰 표시 ==================== */
+  /* ==================== 테이블 뷰 표시 (⭐ 수정됨) ==================== */
   const displayedMovies = useMemo(() => {
-    if (viewMode === VIEW_MODES.TABLE) {
-      return movies.slice(0, TABLE_PAGE_SIZE);
-    }
+    // ⭐ 테이블 뷰: 현재 로드된 영화 모두 표시 (API가 20개씩 반환)
+    // ⭐ 무한 스크롤: 누적된 모든 영화 표시
     return movies;
-  }, [movies, viewMode]);
+  }, [movies]);
 
   /* ==================== 무한 스크롤 ==================== */
   useEffect(() => {
@@ -104,7 +103,7 @@ const Popular = () => {
   /* ==================== 핸들러 ==================== */
   const handlePageChange = page => {
     setCurrentPage(page);
-    fetchMovies(page);
+    fetchMovies(page); // ⭐ 새로운 페이지 데이터 fetch
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -142,16 +141,20 @@ const Popular = () => {
 
       {/* 영화 리스트 */}
       <div className="movies-container">
-        <div className="movies-grid">
-          {displayedMovies.map(movie => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              isInWishlist={isInWishlist(movie.id)}
-              onToggleWishlist={handleWishlist}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="loading-spinner">불러오는 중...</div>
+        ) : (
+          <div className="movies-grid">
+            {displayedMovies.map(movie => (
+              <MovieCard
+                key={movie.id}
+                movie={movie}
+                isInWishlist={isInWishlist(movie.id)}
+                onToggleWishlist={handleWishlist}
+              />
+            ))}
+          </div>
+        )}
 
         {/* 무한 스크롤 로딩 */}
         {viewMode === VIEW_MODES.INFINITE && (
@@ -161,34 +164,38 @@ const Popular = () => {
           </div>
         )}
 
-        {/* 페이지네이션 */}
-        {viewMode === VIEW_MODES.TABLE && (
+        {/* 페이지네이션 (⭐ 개선됨) */}
+        {viewMode === VIEW_MODES.TABLE && !loading && (
           <div className="pagination">
             <button
               disabled={currentPage === 1}
               onClick={() => handlePageChange(currentPage - 1)}
+              className="pagination-arrow"
             >
               이전
             </button>
 
-            {[...Array(5)].map((_, i) => {
-              const page = Math.max(1, currentPage - 2) + i;
-              if (page > totalPages) return null;
+            <div className="pagination-numbers">
+              {[...Array(5)].map((_, i) => {
+                const page = Math.max(1, currentPage - 2) + i;
+                if (page > totalPages) return null;
 
-              return (
-                <button
-                  key={page}
-                  className={page === currentPage ? 'active' : ''}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={page}
+                    className={page === currentPage ? 'active' : ''}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </div>
 
             <button
               disabled={currentPage === totalPages}
               onClick={() => handlePageChange(currentPage + 1)}
+              className="pagination-arrow"
             >
               다음
             </button>
