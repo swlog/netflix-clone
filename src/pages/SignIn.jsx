@@ -334,18 +334,7 @@ const SignIn = () => {
                         errors.agreeTerms ? "error" : ""
                       }`}
                     />
-                    <span className="checkbox-text">
-                      <button
-                        type="button"
-                        className="inline-link"
-                        onClick={() => {
-                          // TODO: 약관 모달 or 페이지 연결
-                        }}
-                      >
-                        이용약관
-                      </button>
-                      에 동의합니다
-                    </span>
+                    <span className="checkbox-text">이용약관에 동의합니다람쥐구멍</span>
                   </label>
                   <span className="error-message">
                     {submitted && errors.agreeTerms ? errors.agreeTerms : ""}
