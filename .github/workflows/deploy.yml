@@ -38,8 +38,6 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: Confi
-
       - name: 🚀 Deploy to GitHub Pages using gh-pages
         # `deploy` 스크립트를 실행합니다. (이는 내부적으로 `predeploy`(build)와 `deploy`(gh-pages -d build)를 실행합니다.)
         run: npm run deploy
