@@ -1,5 +1,5 @@
 /* =========================================================
-   Search Page - Fancy Design
+   Search Page - Fancy Design with Accordion
 ========================================================= */
 
 .search-page {
@@ -346,11 +346,86 @@
   transform: translateY(-2px);
 }
 
-/* Filter Section */
+/* =========================================================
+   Accordion Styles
+========================================================= */
+
 .filter-section {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
+.accordion-section {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* 아코디언 헤더 */
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 12px;
+  margin-bottom: 0;
+  border-radius: 10px;
+  background: rgba(40, 40, 40, 0.5);
+  transition: all 0.3s ease;
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.accordion-header:hover {
+  background: rgba(60, 60, 60, 0.6);
+  border-color: rgba(229, 9, 20, 0.3);
+}
+
+.label-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+}
+
+.label-text i {
+  color: #e50914;
+  font-size: 16px;
+}
+
+.accordion-icon {
+  color: #e50914;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+/* 아코디언 컨텐츠 */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+  padding: 0 12px;
+}
+
+.accordion-content.open {
+  max-height: 1000px;
+  padding: 15px 12px;
+  animation: fadeInContent 0.4s ease-out;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 기존 filter-label은 아코디언이 아닌 섹션용으로 남겨둠 */
 .filter-label {
   display: flex;
   align-items: center;
@@ -365,6 +440,10 @@
   color: #e50914;
   font-size: 16px;
 }
+
+/* =========================================================
+   Filter Elements
+========================================================= */
 
 /* Select */
 .filter-select {
@@ -826,7 +905,7 @@
 
   /* ⭐ 필터 섹션 간격 축소 */
   .filter-section {
-    margin-bottom: 18px;
+    margin-bottom: 15px;
   }
 
   .filter-header {
@@ -834,14 +913,17 @@
     padding-bottom: 12px;
   }
 
-  .filter-label {
-    margin-bottom: 10px;
-    font-size: 13px;
-  }
-
   /* ⭐ 필터 사이드바 패딩 축소 */
   .filter-sidebar {
     padding: 20px;
+  }
+
+  .accordion-header {
+    padding: 10px;
+  }
+
+  .accordion-content.open {
+    padding: 12px 10px;
   }
 
   .pagination button {
@@ -889,12 +971,23 @@
   }
 
   .filter-section {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
 
-  .filter-label {
+  .accordion-header {
+    padding: 8px;
+  }
+
+  .label-text {
+    font-size: 13px;
+  }
+
+  .accordion-icon {
     font-size: 12px;
-    margin-bottom: 8px;
+  }
+
+  .accordion-content.open {
+    padding: 10px 8px;
   }
 
   /* ⭐ 장르 버튼 크기 축소 */
