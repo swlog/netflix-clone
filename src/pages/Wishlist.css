@@ -152,7 +152,7 @@
 .view-toggle button.active {
   background: linear-gradient(135deg, #e50914, #b20710);
   color: #ffffff;
-  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
 }
 
 .view-toggle button:hover:not(.active) {
@@ -280,7 +280,7 @@
 
 .stat-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 20, 147, 0.4);
+  border-color: rgba(229, 9, 20, 0.4);
   box-shadow: 0 8px 25px rgba(255, 20, 147, 0.3);
 }
 
@@ -497,11 +497,11 @@
 
 .filter-select:hover {
   background: rgba(50, 40, 45, 0.9);
-  border-color: rgba(255, 20, 147, 0.4);
+  border-color: rgba(229, 9, 20, 0.4);
 }
 
 .filter-select:focus {
-  border-color: rgba(255, 20, 147, 0.7);
+  border-color: rgba(229, 9, 20, 0.4);
   box-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
 }
 
@@ -529,13 +529,13 @@
 
 .genre-btn:hover {
   background: rgba(60, 40, 50, 0.9);
-  border-color: rgba(255, 20, 147, 0.4);
+  border-color: rgba(229, 9, 20, 0.4);
   transform: translateY(-2px);
 }
 
 .genre-btn.active {
   background: linear-gradient(135deg, rgba(255, 20, 147, 0.3), rgba(229, 9, 20, 0.3));
-  border-color: rgba(255, 20, 147, 0.8);
+  border-color: rgba(229, 9, 20, 0.4);
   box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
 }
 
@@ -728,7 +728,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
 }
 
 .browse-btn:hover {
@@ -801,7 +801,7 @@
 
 .pagination button:hover:not(:disabled):not(.active) {
   background: rgba(50, 40, 45, 0.9);
-  border-color: rgba(255, 20, 147, 0.4);
+  border-color: rgba(229, 9, 20, 0.4);
   transform: translateY(-2px);
 }
 
@@ -813,7 +813,7 @@
 .pagination button.active {
   background: linear-gradient(135deg, #e50914, #b20710);
   border-color: transparent;
-  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
 }
 
 .pagination-arrow {
