@@ -1,12 +1,11 @@
 /* =========================================================
    Movie Card Base
 ========================================================= */
-/* ⭐ 카드 높이를 자동으로 조정 */
+/* ⭐ 카드 전체를 클릭 가능하게 */
 .movie-card {
   position: relative;
   width: 100%;
   max-width: 260px;
-  /* height: 440px; */ /* ❌ 제거 - 고정 높이 삭제 */
   
   margin: 0 auto;
 
@@ -20,22 +19,8 @@
   display: flex;
   flex-direction: column;
 
-  cursor: pointer;
+  cursor: pointer; /* ⭐ 클릭 가능 표시 */
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-/* ⭐ info 영역도 고정 높이 제거하고 최소 높이만 설정 */
-.movie-info {
-  padding: 12px;
-  background: rgba(10, 10, 10, 0.85);
-  
-  min-height: 70px;  /* ⭐ 수정: 고정 높이 대신 최소 높이 사용 */
-  
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  
-  overflow: hidden;  /* 넘치는 텍스트 숨김 */
 }
 
 /* =========================================================
@@ -76,51 +61,27 @@
   z-index: 1;
 }
 
-/* =========================================================
-   Wishlist Button
-========================================================= */
-.wishlist-btn {
+/* ⭐ 위시리스트에 추가된 카드 표시 */
+.movie-card.in-wishlist::after {
+  content: '♥';
   position: absolute;
   top: 10px;
   right: 10px;
-
   width: 38px;
   height: 38px;
   border-radius: 50%;
-
-  border: 2px solid rgba(255, 255, 255, 0.25);
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-
+  background: rgba(229, 9, 20, 0.9);
+  color: #fff;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  cursor: pointer;
   z-index: 20;
-
-  transition: all 0.25s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.5);
 }
 
-.wishlist-btn i {
-  font-size: 16px;
-  color: #fff;
-}
-
-.wishlist-btn:hover {
-  background: rgba(229, 9, 20, 0.9);
-  border-color: rgba(229, 9, 20, 1);
-  transform: scale(1.1);
-}
-
-.wishlist-btn.active {
-  background: rgba(229, 9, 20, 1);
-  border-color: rgba(229, 9, 20, 1);
-}
-
-.wishlist-btn.active i {
-  color: #FFD700; /* ⭐ 추가: active 상태일 때 금색으로 */
-}
+/* ❌ 위시리스트 버튼 스타일 전체 제거 */
 
 /* =========================================================
    Poster (비율 고정 – 핵심)
@@ -292,44 +253,58 @@
   color: #e50914;
 }
 
-/* =========================================================
-   Play Button
-========================================================= */
-.play-btn {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-
-  background: linear-gradient(135deg, #e50914, #b20710);
-  border: none;
+/* ⭐ 위시리스트 상태 표시 */
+.wishlist-status {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(229, 9, 20, 0.2);
+  border: 1px solid rgba(229, 9, 20, 0.4);
   border-radius: 8px;
-
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
-
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-
-  cursor: pointer;
-  transition: all 0.25s ease;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #fff;
 }
 
-.play-btn:hover {
-  background: linear-gradient(135deg, #f40612, #e50914);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.5);
+.wishlist-status i {
+  color: #e50914;
+  font-size: 1rem;
 }
 
-.play-btn i {
-  font-size: 0.8rem;
+.movie-card.in-wishlist .wishlist-status {
+  background: rgba(229, 9, 20, 0.3);
+  border-color: rgba(229, 9, 20, 0.6);
+}
+
+.movie-card.in-wishlist .wishlist-status i {
+  color: #ff1744;
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(0.9); }
+  20%, 40%, 60%, 80% { transform: scale(1.1); }
+  50%, 70% { transform: scale(1.05); }
 }
 
 /* =========================================================
    Bottom Info (기본 표시 영역)
 ========================================================= */
+.movie-info {
+  padding: 12px;
+  background: rgba(10, 10, 10, 0.85);
+  
+  min-height: 70px;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  
+  overflow: hidden;
+}
+
 .movie-title-bottom {
   font-size: 0.95rem;
   font-weight: 600;
@@ -369,13 +344,10 @@
     transform: scale(1.03);
   }
   
-  .wishlist-btn {
+  .movie-card.in-wishlist::after {
     width: 34px;
     height: 34px;
-  }
-  
-  .wishlist-btn i {
-    font-size: 14px;
+    font-size: 18px;
   }
 }
 
@@ -388,15 +360,12 @@
     transform: scale(1.02);
   }
   
-  .wishlist-btn {
+  .movie-card.in-wishlist::after {
     width: 32px;
     height: 32px;
+    font-size: 16px;
     top: 8px;
     right: 8px;
-  }
-  
-  .wishlist-btn i {
-    font-size: 13px;
   }
   
   .movie-info {
@@ -409,6 +378,11 @@
   }
   
   .rating-bottom {
+    font-size: 0.8rem;
+  }
+  
+  .wishlist-status {
+    padding: 6px 10px;
     font-size: 0.8rem;
   }
 }
