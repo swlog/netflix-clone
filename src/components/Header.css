@@ -69,10 +69,23 @@
   gap: 16px;
 }
 
+/* ⭐ 프로필 컨테이너 */
+.profile-container {
+  position: relative;
+}
+
 .profile-wrapper {
   display: flex;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.profile-wrapper:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .user-email {
@@ -91,6 +104,90 @@
   color: white;
 }
 
+/* ⭐ 드롭다운 화살표 */
+.dropdown-arrow {
+  font-size: 12px;
+  color: #e5e5e5;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* ⭐ 프로필 드롭다운 메뉴 */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 220px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  animation: dropdownFadeIn 0.2s ease;
+  z-index: 1001;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dropdown-user-info i {
+  font-size: 24px;
+  color: #e50914;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 8px 0;
+}
+
+.dropdown-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.dropdown-logout:hover {
+  background: rgba(229, 9, 20, 0.2);
+  color: #e50914;
+}
+
+.dropdown-logout i {
+  font-size: 16px;
+}
+
 /* ================= Signin ================= */
 
 .signin-link {
@@ -99,6 +196,12 @@
   padding: 8px 14px;
   border-radius: 4px;
   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.signin-link:hover {
+  background: linear-gradient(135deg, #f40612, #e50914);
+  transform: translateY(-1px);
 }
 
 /* ================= Hamburger ================= */
@@ -139,10 +242,35 @@
   animation: slideDown 0.25s ease;
 }
 
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(229, 9, 20, 0.15);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.mobile-user-info i {
+  font-size: 20px;
+  color: #e50914;
+}
+
 .mobile-menu a {
   color: #e5e5e5;
   font-size: 16px;
   text-decoration: none;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu a:hover {
+  color: #fff;
 }
 
 .mobile-logout {
@@ -152,6 +280,15 @@
   background: none;
   color: #fff;
   border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mobile-logout:hover {
+  background: rgba(229, 9, 20, 0.2);
+  border-color: rgba(229, 9, 20, 0.8);
 }
 
 /* ================= Animation ================= */
@@ -175,6 +312,16 @@
   }
 
   .user-email {
+    display: none;
+  }
+
+  /* ⭐ 드롭다운 화살표 숨김 */
+  .dropdown-arrow {
+    display: none;
+  }
+
+  /* ⭐ 프로필 드롭다운 숨김 */
+  .profile-dropdown {
     display: none;
   }
 
