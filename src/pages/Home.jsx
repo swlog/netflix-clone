@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import tmdbService from "../services/tmdb";
 import MovieCard from "../components/MovieCard";
 import Hero from "../components/Hero";
+import Loading from "../components/Loading";
 import { useWishlist } from "../hooks/useWishlist";
 import toast from "react-hot-toast";
 import "./Home.css";
@@ -118,14 +119,7 @@ const Home = () => {
   };
 
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">
-          <i className="fas fa-film"></i>
-        </div>
-        <p>영화 정보를 불러오는 중...</p>
-      </div>
-    );
+    return <Loading />;
   }
 
   const heroMovies = popularMovies.slice(0, 5);
