@@ -10,15 +10,6 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
     onToggleWishlist(movie);
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
 
   const getRatingColor = (rating) => {
     if (rating >= 8) return '#4ecca3';
