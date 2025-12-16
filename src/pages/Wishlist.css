@@ -106,7 +106,7 @@
 .filter-toggle-btn {
   display: none;
   padding: 10px 20px;
-  background: rgba(255, 20, 147, 0.15);
+  background: rgba(229, 9, 20, 0.2);
   border: 2px solid rgba(255, 20, 147, 0.4);
   border-radius: 10px;
   color: #fff;
@@ -382,7 +382,7 @@
 
 .reset-btn {
   padding: 8px 16px;
-  background: rgba(255, 20, 147, 0.15);
+  background: rgba(229, 9, 20, 0.2);
   border: 1px solid rgba(255, 20, 147, 0.4);
   border-radius: 8px;
   color: #fff;
