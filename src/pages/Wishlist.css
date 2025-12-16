@@ -150,7 +150,7 @@
 }
 
 .view-toggle button.active {
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   color: #ffffff;
   box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
 }
@@ -290,7 +290,7 @@
 
 .stat-card > i {
   font-size: 2.5rem;
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -558,7 +558,7 @@
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(255, 20, 147, 0.5);
@@ -573,7 +573,7 @@
 .filter-range::-moz-range-thumb {
   width: 18px;
   height: 18px;
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(255, 20, 147, 0.5);
@@ -716,7 +716,7 @@
 .browse-btn {
   margin-top: 15px;
   padding: 14px 32px;
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   border: none;
   border-radius: 12px;
   color: white;
@@ -811,7 +811,7 @@
 }
 
 .pagination button.active {
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   border-color: transparent;
   box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
 }
@@ -840,7 +840,7 @@
   height: 56px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #ff1493, #e50914);
+  background: linear-gradient(135deg, #e50914, #b20710);
   color: #ffffff;
   font-size: 20px;
   cursor: pointer;
