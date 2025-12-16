@@ -103,12 +103,16 @@ const Home = () => {
     const added = toggleWishlist(movie);
 
     if (added) {
-      toast.success(`${movie.title} 위시리스트 추가`, {
+      toast.success(`${movie.title} 위시리스트에 추가되었습니다.`, {
         position: "bottom-right",
+        icon: "❤️", // ⭐ 하트 아이콘 추가
+        duration: 2000,
       });
     } else {
-      toast(`${movie.title} 위시리스트 제거`, {
+      toast(`${movie.title} 위시리스트에서 제거되었습니다 `, {
         position: "bottom-right",
+        icon: "💔", // ⭐ 깨진 하트 아이콘
+        duration: 2000,
       });
     }
   };
