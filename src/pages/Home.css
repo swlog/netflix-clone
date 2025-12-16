@@ -8,7 +8,6 @@
   animation: sectionFadeIn 0.8s ease-out;
 }
 
-
 .movie-section:nth-child(2) { animation-delay: 0.1s; }
 .movie-section:nth-child(3) { animation-delay: 0.2s; }
 .movie-section:nth-child(4) { animation-delay: 0.3s; }
@@ -127,11 +126,11 @@
   background: linear-gradient(90deg, #f40612, #e50914);
 }
 
-/* 영화 카드 크기 줄이기 */
+/* 영화 카드 크기 */
 .movie-grid .movie-card {
-  flex: 0 0 180px; /* 260px → 180px */
-  min-width: 180px;
-  max-width: 180px;
+  flex: 0 0 150px;
+  min-width: 150px;
+  max-width: 150px;
   transition: all 0.3s ease;
 }
 
@@ -139,90 +138,6 @@
 .movie-grid .movie-card:hover {
   transform: scale(1.08);
   z-index: 10;
-}
-
-/* =========================================================
-   반응형
-========================================================= */
-@media (max-width: 1200px) {
-  .movie-section {
-    padding: 0 40px;
-  }
-
-  .movie-grid .movie-card {
-    flex: 0 0 160px;
-    min-width: 160px;
-    max-width: 160px;
-  }
-}
-
-@media (max-width: 768px) {
-  .movie-section {
-    padding: 0 20px;
-  }
-
-  .wishlist-section {
-    padding: 20px;
-  }
-
-  .section-header h2 {
-    font-size: 1.2rem;
-  }
-
-  .movie-grid .movie-card {
-    flex: 0 0 140px;
-    min-width: 140px;
-    max-width: 140px;
-  }
-
-  .movie-grid .movie-card:hover {
-    transform: scale(1.05);
-  }
-
-  .slider-nav-btn {
-    display: none;
-  }
-
-  .movie-count {
-    font-size: 0.8rem;
-    padding: 5px 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .movie-section {
-    padding: 0 15px;
-  }
-
-  .wishlist-section {
-    padding: 15px;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-
-  .section-header h2 {
-    font-size: 1.1rem;
-  }
-
-  .movie-grid {
-    gap: 6px;
-    padding: 15px 0;
-  }
-
-  .movie-grid .movie-card {
-    flex: 0 0 120px;
-    min-width: 120px;
-    max-width: 120px;
-  }
-
-  .movie-grid .movie-card:hover {
-    transform: scale(1.03);
-  }
 }
 
 /* =========================================================
@@ -292,13 +207,9 @@
   }
 
   .movie-grid .movie-card {
-    flex: 0 0 220px;
-    min-width: 220px;
-  }
-
-  .movie-grid .movie-card:hover {
-    flex: 0 0 240px;
-    min-width: 240px;
+    flex: 0 0 140px;
+    min-width: 140px;
+    max-width: 140px;
   }
 }
 
@@ -316,14 +227,13 @@
   }
 
   .movie-grid .movie-card {
-    flex: 0 0 180px;
-    min-width: 180px;
+    flex: 0 0 130px;
+    min-width: 130px;
+    max-width: 130px;
   }
 
   .movie-grid .movie-card:hover {
-    flex: 0 0 190px;
-    min-width: 190px;
-    transform: scale(1.02);
+    transform: scale(1.05);
   }
 
   .slider-nav-btn {
@@ -362,12 +272,12 @@
   }
 
   .movie-grid .movie-card {
-    flex: 0 0 150px;
-    min-width: 150px;
+    flex: 0 0 110px;
+    min-width: 110px;
+    max-width: 110px;
   }
 
   .movie-grid .movie-card:hover {
-    flex: 0 0 155px;
-    min-width: 155px;
+    transform: scale(1.03);
   }
 }
