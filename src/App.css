@@ -1,3 +1,7 @@
+/* =========================================================
+   Global Reset
+========================================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +18,37 @@ body {
   min-height: 100vh;
 }
 
-/* 메인 콘텐츠 영역 - 모든 페이지 공통 */
+/* =========================================================
+   페이지 전환 애니메이션 - 슬라이드 + 페이드 (Netflix 스타일)
+========================================================= */
+
+.page-transition-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden; /* 슬라이드 시 가로 스크롤 방지 */
+}
+
+.page-wrapper {
+  animation: slideAndFade 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+/* 슬라이드 + 페이드 인 애니메이션 */
+@keyframes slideAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* =========================================================
+   Common Layout
+========================================================= */
+
 .main-content {
   max-width: 1400px;
   margin: 0 auto;
@@ -42,4 +76,32 @@ h1 {
 h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+}
+
+/* =========================================================
+   Responsive - 페이지 전환 속도 조정
+========================================================= */
+
+@media (max-width: 768px) {
+  .page-wrapper {
+    animation-duration: 0.4s; /* 모바일에서 더 빠르게 */
+  }
+  
+  @keyframes slideAndFade {
+    from {
+      opacity: 0;
+      transform: translateX(20px); /* 모바일에서 슬라이드 거리 감소 */
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/* 모션 민감 사용자를 위한 배려 (접근성) */
+@media (prefers-reduced-motion: reduce) {
+  .page-wrapper {
+    animation: none;
+  }
 }
