@@ -1,12 +1,12 @@
 /* =========================================================
    Movie Card Base
 ========================================================= */
-/* ⭐ 카드 전체 높이 줄이기 */
+/* ⭐ 카드 전체를 클릭 가능하게 */
 .movie-card {
   position: relative;
   width: 100%;
   max-width: 260px;
-  height: auto; /* 440px → auto로 변경 */
+  
   margin: 0 auto;
 
   background: rgba(20, 20, 20, 0.85);
@@ -23,19 +23,62 @@
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
-/* ⭐ info 영역 높이 줄이기 */
-.movie-info {
-  padding: 10px 12px; /* 12px → 10px */
-  background: rgba(10, 10, 10, 0.85);
-  
-  height: auto; /* 80px → auto */
-  min-height: 60px; /* 최소 높이만 지정 */
-  
+/* =========================================================
+   Hover (기본)
+========================================================= */
+.movie-card:hover {
+  transform: scale(1.05);
+  border-color: rgba(229, 9, 20, 0.6);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.5),
+    0 0 18px rgba(229, 9, 20, 0.25);
+  z-index: 10;
+}
+
+/* 테이블 뷰에서는 hover 축소 (레이아웃 보호) */
+.table-mode .movie-card:hover {
+  transform: scale(1.02);
+}
+
+/* =========================================================
+   Wishlist State
+========================================================= */
+.movie-card.in-wishlist {
+  border-color: rgba(229, 9, 20, 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(229, 9, 20, 0.12),
+    rgba(20, 20, 20, 0.85)
+  );
+}
+
+.movie-card.in-wishlist::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(229, 9, 20, 0.15));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ⭐ 위시리스트에 추가된 카드 표시 */
+.movie-card.in-wishlist::after {
+  content: '♥';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(229, 9, 20, 0.9);
+  color: #fff;
+  font-size: 20px;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.5);
 }
 
 /* =========================================================
@@ -44,7 +87,7 @@
 .movie-poster {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3; /* 포스터 비율 유지 */
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
 }
@@ -63,34 +106,186 @@
 }
 
 /* =========================================================
-   Bottom Info (기본 표시 영역)
+   Skeleton
 ========================================================= */
-.movie-title-bottom {
-  font-size: 0.9rem; /* 0.95rem → 0.9rem */
+.image-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(40, 40, 40, 0.8) 25%,
+    rgba(60, 60, 60, 0.8) 50%,
+    rgba(40, 40, 40, 0.8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-skeleton i {
+  font-size: 3rem;
+  color: rgba(229, 9, 20, 0.3);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* =========================================================
+   Overlay
+========================================================= */
+.movie-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.95)
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+
+.movie-card:hover .movie-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  width: 100%;
+  transform: translateY(16px);
+  transition: transform 0.35s ease;
+}
+
+.movie-card:hover .overlay-content {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   Overlay Content
+========================================================= */
+
+/* ⭐ 장르 컨테이너 */
+.genres {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.genre-tag {
+  padding: 6px 14px;
+  background: #e50914;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #fff;
-  line-height: 1.3;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+  transition: all 0.2s ease;
+}
 
+.genre-tag:hover {
+  background: #f40612;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.6);
+}
+
+.movie-overview {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #d4d4d4;
+  margin: 0;
+  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* =========================================================
+   Bottom Info (기본 표시 영역) - ⭐ 높이 고정 + 겹침 방지
+========================================================= */
+.movie-info {
+  padding: 14px 12px;
+  background: rgba(10, 10, 10, 0.85);
+  
+  /* ⭐⭐⭐ 높이를 늘려서 긴 제목도 수용 ⭐⭐⭐ */
+  min-height: 95px;
+  height: 95px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* ⭐ 공간 균등 배분 */
+  
+  overflow: hidden;
+}
+
+.movie-title-bottom {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35; /* ⭐ line-height 약간 줄임 */
+
+  /* ⭐ 2줄 제한 + 말줄임표 */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  overflow: hidden;
-
   line-clamp: 2;
-  margin: 0; /* 여백 제거 */
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  margin: 0;
+  flex-shrink: 0; /* ⭐ 제목이 줄어들지 않도록 */
+}
+
+/* ⭐ 평점과 개봉일을 한 줄에 배치 */
+.rating-date-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0; /* ⭐ 평점/날짜가 줄어들지 않도록 */
+  margin-top: 4px;
 }
 
 .rating-bottom {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.85rem; /* 0.9rem → 0.85rem */
-  font-weight: 600;
-  margin: 0; /* 여백 제거 */
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 .rating-bottom i {
   color: #ffd700;
+  font-size: 0.9rem;
+}
+
+/* ⭐ 하단 개봉일 스타일 */
+.release-date-bottom {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  color: #b3b3b3;
+  font-weight: 600;
+}
+
+.release-date-bottom i {
+  color: #b3b3b3;
+  font-size: 0.8rem;
 }
 
 /* =========================================================
@@ -98,38 +293,74 @@
 ========================================================= */
 @media (max-width: 768px) {
   .movie-card {
-    max-width: 180px;
+    max-width: 220px;
   }
 
+  .movie-card:hover {
+    transform: scale(1.03);
+  }
+  
+  .movie-card.in-wishlist::after {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+  
+  /* ⭐ 모바일에서도 높이 고정 */
   .movie-info {
-    padding: 8px 10px;
-    min-height: 55px;
+    min-height: 90px;
+    height: 90px;
+    padding: 12px 10px;
   }
-
+  
   .movie-title-bottom {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.3;
   }
-
+  
   .rating-bottom {
+    font-size: 1rem;
+  }
+  
+  .release-date-bottom {
     font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .movie-card {
-    max-width: 150px;
+    max-width: 200px;
   }
 
+  .movie-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .movie-card.in-wishlist::after {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    top: 8px;
+    right: 8px;
+  }
+  
+  /* ⭐ 작은 화면에서도 높이 고정 */
   .movie-info {
-    padding: 6px 8px;
-    min-height: 50px;
+    min-height: 85px;
+    height: 85px;
+    padding: 10px;
   }
-
+  
   .movie-title-bottom {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
   }
-
+  
   .rating-bottom {
+    font-size: 0.95rem;
+  }
+  
+  .release-date-bottom {
     font-size: 0.75rem;
   }
 }

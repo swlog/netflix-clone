@@ -5,8 +5,8 @@ import './MovieCard.css';
 const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const handleWishlistClick = (e) => {
-    e.stopPropagation();
+  // ⭐ 카드 클릭 시 위시리스트 토글
+  const handleCardClick = () => {
     onToggleWishlist(movie);
   };
 
@@ -30,16 +30,10 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
   const posterUrl = tmdbService.getImageUrl(movie.poster_path, 'w500');
 
   return (
-    <div className={`movie-card ${isInWishlist ? 'in-wishlist' : ''}`}>
-      {/* 위시리스트 버튼 - 별 아이콘 */}
-      <button 
-        className={`wishlist-btn ${isInWishlist ? 'active' : ''}`}
-        onClick={handleWishlistClick}
-        aria-label={isInWishlist ? '위시리스트에서 제거' : '위시리스트에 추가'}
-      >
-        <i className={`${isInWishlist ? 'fas' : 'far'} fa-star`}></i>
-      </button>
-
+    <div 
+      className={`movie-card ${isInWishlist ? 'in-wishlist' : ''}`}
+      onClick={handleCardClick}
+    >
       {/* 포스터 이미지 */}
       <div className="movie-poster">
         {!imageLoaded && (
@@ -62,20 +56,20 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
         {/* 호버 오버레이 */}
         <div className="movie-overlay">
           <div className="overlay-content">
-            <h3 className="movie-title">{movie.title}</h3>
+            {/* ⭐ 제목 제거됨 - 하단에만 표시 */}
             
-            <div className="movie-meta">
-              <div className="rating" style={{ borderColor: getRatingColor(movie.vote_average) }}>
-                <i className="fas fa-star"></i>
-                <span>{movie.vote_average.toFixed(1)}</span>
+            {/* 장르만 표시 */}
+            {movie.genre_ids && movie.genre_ids.length > 0 && (
+              <div className="genres">
+                {movie.genre_ids.slice(0, 3).map(genreId => (
+                  <span key={genreId} className="genre-tag">
+                    {getGenreName(genreId)}
+                  </span>
+                ))}
               </div>
-              
-              <div className="release-date">
-                <i className="far fa-calendar-alt"></i>
-                <span>{formatDate(movie.release_date)}</span>
-              </div>
-            </div>
+            )}
 
+            {/* 줄거리 */}
             <p className="movie-overview">
               {movie.overview 
                 ? movie.overview.length > 120 
@@ -83,32 +77,28 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
                   : movie.overview
                 : '줄거리 정보가 없습니다.'}
             </p>
-
-            {movie.genre_ids && movie.genre_ids.length > 0 && (
-              <div className="genres">
-                {movie.genre_ids.slice(0, 3).map(genreId => (
-                  <span key={genreId} className="genre-tag">
-                    <i className="fas fa-tag"></i>
-                    {getGenreName(genreId)}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <button className="play-btn">
-              <i className="fas fa-play"></i>
-              <span>상세보기</span>
-            </button>
           </div>
         </div>
       </div>
 
-      {/* 카드 하단 정보 */}
+      {/* 카드 하단 정보 - 제목은 여기에만 표시 */}
       <div className="movie-info">
         <h4 className="movie-title-bottom">{movie.title}</h4>
-        <div className="rating-bottom" style={{ color: getRatingColor(movie.vote_average) }}>
-          <i className="fas fa-star"></i>
-          <span>{movie.vote_average.toFixed(1)}</span>
+        
+        {/* 평점과 개봉일을 한 줄에 */}
+        <div className="rating-date-row">
+          <div className="rating-bottom" style={{ color: getRatingColor(movie.vote_average) }}>
+            <i className="fas fa-star"></i>
+            <span>{movie.vote_average.toFixed(1)}</span>
+          </div>
+
+          {/* 개봉일 표시 (년도만) */}
+          {movie.release_date && (
+            <div className="release-date-bottom">
+              <i className="far fa-calendar-alt"></i>
+              <span>{new Date(movie.release_date).getFullYear()}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

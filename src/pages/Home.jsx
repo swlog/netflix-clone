@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import tmdbService from '../services/tmdb';
 import MovieCard from '../components/MovieCard';
+import Hero from '../components/Hero';
 import { useWishlist } from '../hooks/useWishlist';
 import toast from 'react-hot-toast';
 import './Home.css';
 
-// tmdbService에서 필요한 함수들 추출
 const { 
   getPopularMovies, 
   getNowPlayingMovies,
@@ -22,20 +22,20 @@ const Home = () => {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [actionMovies, setActionMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  const { wishlist, isInWishlist, toggleWishlist } = useWishlist();
-  
-  // 중복 에러 토스트 방지
-  const hasShownError = useRef(false);
 
-  // 슬라이더 ref 추가
+  // ⭐ 히어로 배너 인덱스
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  const { wishlist, isInWishlist, toggleWishlist } = useWishlist();
+  const hasShownError = useRef(false);
   const sliderRefs = useRef({});
 
-  // 슬라이더 스크롤 함수
+  // ⭐ interval 중복 방지용 ref
+  const heroIntervalRef = useRef(null);
+
   const scroll = (sectionId, direction) => {
     const slider = sliderRefs.current[sectionId];
     if (!slider) return;
-
     const scrollAmount = direction === 'left' ? -600 : 600;
     slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
@@ -45,7 +45,6 @@ const Home = () => {
       try {
         setLoading(true);
 
-        // 5개의 서로 다른 API 엔드포인트 호출
         const [
           popularData, 
           nowPlayingData, 
@@ -65,19 +64,16 @@ const Home = () => {
         setTopRatedMovies(topRatedData.results);
         setUpcomingMovies(upcomingData.results);
         setActionMovies(actionData.results);
-        
-        // 성공 시 에러 플래그 리셋
+
         hasShownError.current = false;
-        
       } catch (error) {
         console.error('영화 목록 로딩 실패:', error);
-        
-        // 에러 토스트를 한 번만 표시
+
         if (!hasShownError.current) {
           hasShownError.current = true;
-          
+
           if (error.message.includes('유효하지 않은 TMDB API 키')) {
-            toast.error('유효하지 않은 TMDB API 키입니다. 올바른 API 키로 다시 가입해주세요.', {
+            toast.error('유효하지 않은 TMDB API 키입니다.', {
               duration: 5000,
               position: 'top-center',
               id: 'api-key-error',
@@ -98,45 +94,63 @@ const Home = () => {
     fetchMovies();
   }, []);
 
-  const handleToggleWishlist = (movie) => {
-    const added = toggleWishlist(movie);
-    
-    if (added) {
-      toast.success(
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="fas fa-heart" style={{ color: '#e50914' }}></i>
-          <span><strong>{movie.title}</strong>을(를) 위시리스트에 추가했습니다</span>
-        </div>,
-        {
-          duration: 2000,
-          position: 'bottom-right',
-          style: {
-            background: 'rgba(20, 20, 20, 0.95)',
-            color: '#fff',
-            border: '1px solid rgba(229, 9, 20, 0.5)',
-          },
-        }
-      );
-    } else {
-      toast(
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="far fa-heart" style={{ color: '#b3b3b3' }}></i>
-          <span><strong>{movie.title}</strong>을(를) 위시리스트에서 제거했습니다</span>
-        </div>,
-        {
-          duration: 2000,
-          position: 'bottom-right',
-          style: {
-            background: 'rgba(20, 20, 20, 0.95)',
-            color: '#fff',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-          },
-        }
-      );
-    }
-  };
+  // ⭐ 히어로 배너 자동 슬라이드 (10초, 중복 생성 방지)
+  useEffect(() => {
+    if (popularMovies.length === 0) return;
+    if (heroIntervalRef.current) return;
 
-  // 로딩 중
+    heroIntervalRef.current = setInterval(() => {
+      setHeroIndex((prevIndex) =>
+        (prevIndex + 1) % Math.min(5, popularMovies.length)
+      );
+    }, 10000); // ✅ 10초
+
+    return () => {
+      clearInterval(heroIntervalRef.current);
+      heroIntervalRef.current = null;
+    };
+  }, [popularMovies]);
+
+  const handleToggleWishlist = (movie) => {
+  const added = toggleWishlist(movie);
+  
+  if (added) {
+    toast.success(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <i className="fas fa-heart" style={{ color: '#e50914' }}></i>
+        <span><strong>{movie.title}</strong>을(를) 위시리스트에 추가했습니다</span>
+      </div>,
+      {
+        duration: 2000,
+        position: 'bottom-right',
+        icon: false, // ⭐ 기본 체크마크 아이콘 제거
+        style: {
+          background: 'rgba(20, 20, 20, 0.95)',
+          color: '#fff',
+          border: '1px solid rgba(229, 9, 20, 0.5)',
+        },
+      }
+    );
+  } else {
+    toast(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <i className="far fa-heart" style={{ color: '#b3b3b3' }}></i>
+        <span><strong>{movie.title}</strong>을(를) 위시리스트에서 제거했습니다</span>
+      </div>,
+      {
+        duration: 2000,
+        position: 'bottom-right',
+        icon: false, // ⭐ 기본 아이콘 제거
+        style: {
+          background: 'rgba(20, 20, 20, 0.95)',
+          color: '#fff',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+        },
+      }
+    );
+  }
+};
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -148,73 +162,21 @@ const Home = () => {
     );
   }
 
+  const heroMovies = popularMovies.slice(0, 5);
+  const currentHeroMovie = heroMovies[heroIndex];
+
   return (
     <div className="home-container">
-      {/* 히어로 섹션 */}
-      <section className="hero-section">
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <h1 className="hero-title">
-            <i className="fas fa-film"></i>
-            영화 탐색
-          </h1>
-          <p className="hero-subtitle">
-            최신 인기 영화부터 클래식까지, 당신이 찾는 모든 영화가 여기에
-          </p>
-          {wishlist.length > 0 && (
-            <div className="wishlist-count">
-              <i className="fas fa-heart"></i>
-              <span>위시리스트 {wishlist.length}개</span>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 메인 콘텐츠 */}
-      <div className="home-content">
-        
-        {/* 내 위시리스트 */}
-        {wishlist.length > 0 && (
-          <section className="movie-section wishlist-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-heart"></i>
-                내 위시리스트
-              </h2>
-              <span className="movie-count">{wishlist.length}개</span>
-            </div>
-            
-            {/* 네비게이션 버튼 */}
-            <button 
-              className="slider-nav-btn prev"
-              onClick={() => scroll('wishlist', 'left')}
-              aria-label="이전"
-            >
-              <i className="fas fa-chevron-left"></i>
-            </button>
-            <button 
-              className="slider-nav-btn next"
-              onClick={() => scroll('wishlist', 'right')}
-              aria-label="다음"
-            >
-              <i className="fas fa-chevron-right"></i>
-            </button>
-
-            <div 
-              className="movie-grid"
-              ref={(el) => sliderRefs.current['wishlist'] = el}
-            >
-              {wishlist.slice(0, 20).map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                  movie={movie}
-                  isInWishlist={true}
-                  onToggleWishlist={handleToggleWishlist}
-                />
-              ))}
-            </div>
-          </section>
-        )}
+      {currentHeroMovie && (
+        <Hero
+          movie={currentHeroMovie}
+          isInWishlist={isInWishlist(currentHeroMovie.id)}
+          onToggleWishlist={handleToggleWishlist}
+          currentIndex={heroIndex}
+          totalSlides={heroMovies.length}
+          onSlideChange={setHeroIndex}
+        />
+      )}
 
         {/* 인기 영화 */}
         <section className="movie-section">
@@ -416,7 +378,6 @@ const Home = () => {
           </div>
         </section>
       </div>
-    </div>
   );
 };
 
