@@ -157,6 +157,7 @@
   transform: scale(1.05);
 }
 
+
 /* 반응형 */
 @media (max-width: 1200px) {
   .hero {
@@ -267,4 +268,20 @@
     flex: 0;
     padding: 8px 15px;
   }
+}
+/* =========================================================
+   위시리스트 버튼 활성화 상태
+========================================================= */
+.hero-btn-add.active {
+  background-color: rgba(229, 9, 20, 0.9);
+  border-color: rgba(229, 9, 20, 1);
+}
+
+.hero-btn-add.active:hover {
+  background-color: rgba(229, 9, 20, 1);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-btn-add.active i {
+  color: white;
 }

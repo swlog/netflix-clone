@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import tmdbService from '../services/tmdb';
 import MovieCard from '../components/MovieCard';
+import Hero from '../components/Hero';  // ⭐ Hero 추가
 import { useWishlist } from '../hooks/useWishlist';
 import toast from 'react-hot-toast';
 import './Home.css';
 
-// tmdbService에서 필요한 함수들 추출
 const { 
   getPopularMovies, 
   getNowPlayingMovies,
@@ -24,18 +24,12 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   
   const { wishlist, isInWishlist, toggleWishlist } = useWishlist();
-  
-  // 중복 에러 토스트 방지
   const hasShownError = useRef(false);
-
-  // 슬라이더 ref 추가
   const sliderRefs = useRef({});
 
-  // 슬라이더 스크롤 함수
   const scroll = (sectionId, direction) => {
     const slider = sliderRefs.current[sectionId];
     if (!slider) return;
-
     const scrollAmount = direction === 'left' ? -600 : 600;
     slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
@@ -45,7 +39,6 @@ const Home = () => {
       try {
         setLoading(true);
 
-        // 5개의 서로 다른 API 엔드포인트 호출
         const [
           popularData, 
           nowPlayingData, 
@@ -66,13 +59,11 @@ const Home = () => {
         setUpcomingMovies(upcomingData.results);
         setActionMovies(actionData.results);
         
-        // 성공 시 에러 플래그 리셋
         hasShownError.current = false;
         
       } catch (error) {
         console.error('영화 목록 로딩 실패:', error);
         
-        // 에러 토스트를 한 번만 표시
         if (!hasShownError.current) {
           hasShownError.current = true;
           
@@ -136,7 +127,6 @@ const Home = () => {
     }
   };
 
-  // 로딩 중
   if (loading) {
     return (
       <div className="loading-container">
@@ -148,29 +138,21 @@ const Home = () => {
     );
   }
 
+  // ⭐ 히어로 배너에 표시할 영화 (인기 영화 1위)
+  const heroMovie = popularMovies[0];
+
   return (
     <div className="home-container">
-      {/* 히어로 섹션 */}
-      <section className="hero-section">
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <h1 className="hero-title">
-            <i className="fas fa-film"></i>
-            영화 탐색
-          </h1>
-          <p className="hero-subtitle">
-            최신 인기 영화부터 클래식까지, 당신이 찾는 모든 영화가 여기에
-          </p>
-          {wishlist.length > 0 && (
-            <div className="wishlist-count">
-              <i className="fas fa-heart"></i>
-              <span>위시리스트 {wishlist.length}개</span>
-            </div>
-          )}
-        </div>
-      </section>
+      {/* ⭐ 히어로 배너 - 기존 hero-section 대체 */}
+      {heroMovie && (
+        <Hero 
+          movie={heroMovie} 
+          isInWishlist={isInWishlist(heroMovie.id)}
+          onToggleWishlist={handleToggleWishlist}
+        />
+      )}
 
-      {/* 메인 콘텐츠 */}
+      {/* 메인 콘텐츠 - 기존 슬라이더 그대로 유지 */}
       <div className="home-content">
         
         {/* 내 위시리스트 */}
@@ -184,7 +166,6 @@ const Home = () => {
               <span className="movie-count">{wishlist.length}개</span>
             </div>
             
-            {/* 네비게이션 버튼 */}
             <button 
               className="slider-nav-btn prev"
               onClick={() => scroll('wishlist', 'left')}

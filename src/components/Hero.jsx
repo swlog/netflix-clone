@@ -2,7 +2,7 @@ import React from 'react';
 import tmdbService from '../services/tmdb';
 import './Hero.css';
 
-function Hero({ movie }) {
+function Hero({ movie, isInWishlist, onToggleWishlist }) {
   if (!movie) return null;
 
   const backdropUrl = tmdbService.getImageUrl(movie.backdrop_path, 'original');
@@ -35,8 +35,14 @@ function Hero({ movie }) {
               <i className="fas fa-info-circle"></i>
               상세 정보
             </button>
-            <button className="hero-btn hero-btn-add">
-              <i className="fas fa-plus"></i>
+            {/* ⭐ 위시리스트 추가/제거 버튼 */}
+            <button 
+              className={`hero-btn hero-btn-add ${isInWishlist ? 'active' : ''}`}
+              onClick={() => onToggleWishlist(movie)}
+              aria-label={isInWishlist ? '위시리스트에서 제거' : '위시리스트에 추가'}
+              title={isInWishlist ? '위시리스트에서 제거' : '위시리스트에 추가'}
+            >
+              {isInWishlist ? '✓' : '+'}
             </button>
           </div>
         </div>
