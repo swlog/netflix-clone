@@ -112,26 +112,44 @@ const Home = () => {
   }, [popularMovies]);
 
   const handleToggleWishlist = (movie) => {
-    const added = toggleWishlist(movie);
-
-    if (added) {
-      toast.success(
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="fas fa-heart" style={{ color: '#e50914' }}></i>
-          <span><strong>{movie.title}</strong>을(를) 위시리스트에 추가했습니다</span>
-        </div>,
-        { duration: 2000, position: 'bottom-right' }
-      );
-    } else {
-      toast(
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="far fa-heart"></i>
-          <span><strong>{movie.title}</strong>을(를) 위시리스트에서 제거했습니다</span>
-        </div>,
-        { duration: 2000, position: 'bottom-right' }
-      );
-    }
-  };
+  const added = toggleWishlist(movie);
+  
+  if (added) {
+    toast.success(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <i className="fas fa-heart" style={{ color: '#e50914' }}></i>
+        <span><strong>{movie.title}</strong>을(를) 위시리스트에 추가했습니다</span>
+      </div>,
+      {
+        duration: 2000,
+        position: 'bottom-right',
+        icon: false, // ⭐ 기본 체크마크 아이콘 제거
+        style: {
+          background: 'rgba(20, 20, 20, 0.95)',
+          color: '#fff',
+          border: '1px solid rgba(229, 9, 20, 0.5)',
+        },
+      }
+    );
+  } else {
+    toast(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <i className="far fa-heart" style={{ color: '#b3b3b3' }}></i>
+        <span><strong>{movie.title}</strong>을(를) 위시리스트에서 제거했습니다</span>
+      </div>,
+      {
+        duration: 2000,
+        position: 'bottom-right',
+        icon: false, // ⭐ 기본 아이콘 제거
+        style: {
+          background: 'rgba(20, 20, 20, 0.95)',
+          color: '#fff',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+        },
+      }
+    );
+  }
+};
 
   if (loading) {
     return (
