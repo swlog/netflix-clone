@@ -31,10 +31,6 @@ function Hero({ movie, isInWishlist, onToggleWishlist, currentIndex, totalSlides
               <i className="fas fa-play"></i>
               재생
             </button>
-            <button className="hero-btn hero-btn-info">
-              <i className="fas fa-info-circle"></i>
-              상세 정보
-            </button>
             <button 
               className={`hero-btn hero-btn-add ${isInWishlist ? 'active' : ''}`}
               onClick={() => onToggleWishlist(movie)}
