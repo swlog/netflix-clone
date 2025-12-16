@@ -160,49 +160,6 @@ const Home = () => {
         />
       )}
 
-      <div className="home-content">
-          {/* 내 위시리스트 */}
-        {wishlist.length > 0 && (
-          <section className="movie-section wishlist-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-heart"></i>
-                내 위시리스트
-              </h2>
-              <span className="movie-count">{wishlist.length}개</span>
-            </div>
-            
-            <button 
-              className="slider-nav-btn prev"
-              onClick={() => scroll('wishlist', 'left')}
-              aria-label="이전"
-            >
-              <i className="fas fa-chevron-left"></i>
-            </button>
-            <button 
-              className="slider-nav-btn next"
-              onClick={() => scroll('wishlist', 'right')}
-              aria-label="다음"
-            >
-              <i className="fas fa-chevron-right"></i>
-            </button>
-
-            <div 
-              className="movie-grid"
-              ref={(el) => sliderRefs.current['wishlist'] = el}
-            >
-              {wishlist.slice(0, 20).map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                  movie={movie}
-                  isInWishlist={true}
-                  onToggleWishlist={handleToggleWishlist}
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* 인기 영화 */}
         <section className="movie-section">
           <div className="section-header">
@@ -403,7 +360,6 @@ const Home = () => {
           </div>
         </section>
       </div>
-    </div>
   );
 };
 
