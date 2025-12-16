@@ -26,7 +26,7 @@ const Home = () => {
   // ⭐ 히어로 배너 인덱스
   const [heroIndex, setHeroIndex] = useState(0);
 
-  const { wishlist, isInWishlist, toggleWishlist } = useWishlist();
+  const { wishlist, toggleWishlist } = useWishlist();
   const hasShownError = useRef(false);
   const sliderRefs = useRef({});
 
