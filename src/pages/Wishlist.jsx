@@ -59,7 +59,7 @@ const Wishlist = () => {
     rating: false,
   });
 
-  const { wishlist, isInWishlist, toggleWishlist, clearWishlist } = useWishlist();
+  const { wishlist, toggleWishlist, clearWishlist } = useWishlist();
   const loadingRef = useRef(null);
   const observerRef = useRef(null);
 
