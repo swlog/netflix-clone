@@ -10,7 +10,7 @@ const VIEW_MODES = {
   INFINITE: "infinite",
 };
 
-const TABLE_PAGE_SIZE = 20; // CSS가 알아서 화면에 맞게 배치
+const TABLE_PAGE_SIZE = 6;// CSS가 알아서 화면에 맞게 배치
 
 const Popular = () => {
   /* ==================== 상태 ==================== */

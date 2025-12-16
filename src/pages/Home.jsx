@@ -28,6 +28,18 @@ const Home = () => {
   // 중복 에러 토스트 방지
   const hasShownError = useRef(false);
 
+  // 슬라이더 ref 추가
+  const sliderRefs = useRef({});
+
+  // 슬라이더 스크롤 함수
+  const scroll = (sectionId, direction) => {
+    const slider = sliderRefs.current[sectionId];
+    if (!slider) return;
+
+    const scrollAmount = direction === 'left' ? -600 : 600;
+    slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -171,8 +183,28 @@ const Home = () => {
               </h2>
               <span className="movie-count">{wishlist.length}개</span>
             </div>
-            <div className="movie-grid">
-              {wishlist.slice(0, 10).map((movie) => (
+            
+            {/* 네비게이션 버튼 */}
+            <button 
+              className="slider-nav-btn prev"
+              onClick={() => scroll('wishlist', 'left')}
+              aria-label="이전"
+            >
+              <i className="fas fa-chevron-left"></i>
+            </button>
+            <button 
+              className="slider-nav-btn next"
+              onClick={() => scroll('wishlist', 'right')}
+              aria-label="다음"
+            >
+              <i className="fas fa-chevron-right"></i>
+            </button>
+
+            <div 
+              className="movie-grid"
+              ref={(el) => sliderRefs.current['wishlist'] = el}
+            >
+              {wishlist.slice(0, 20).map((movie) => (
                 <MovieCard
                   key={movie.id}
                   movie={movie}
@@ -193,8 +225,27 @@ const Home = () => {
             </h2>
             <span className="movie-count">{popularMovies.length}개</span>
           </div>
-          <div className="movie-grid">
-            {popularMovies.slice(0, 10).map((movie) => (
+          
+          <button 
+            className="slider-nav-btn prev"
+            onClick={() => scroll('popular', 'left')}
+            aria-label="이전"
+          >
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button 
+            className="slider-nav-btn next"
+            onClick={() => scroll('popular', 'right')}
+            aria-label="다음"
+          >
+            <i className="fas fa-chevron-right"></i>
+          </button>
+
+          <div 
+            className="movie-grid"
+            ref={(el) => sliderRefs.current['popular'] = el}
+          >
+            {popularMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
@@ -214,8 +265,27 @@ const Home = () => {
             </h2>
             <span className="movie-count">{nowPlayingMovies.length}개</span>
           </div>
-          <div className="movie-grid">
-            {nowPlayingMovies.slice(0, 10).map((movie) => (
+          
+          <button 
+            className="slider-nav-btn prev"
+            onClick={() => scroll('nowPlaying', 'left')}
+            aria-label="이전"
+          >
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button 
+            className="slider-nav-btn next"
+            onClick={() => scroll('nowPlaying', 'right')}
+            aria-label="다음"
+          >
+            <i className="fas fa-chevron-right"></i>
+          </button>
+
+          <div 
+            className="movie-grid"
+            ref={(el) => sliderRefs.current['nowPlaying'] = el}
+          >
+            {nowPlayingMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
@@ -235,8 +305,27 @@ const Home = () => {
             </h2>
             <span className="movie-count">{topRatedMovies.length}개</span>
           </div>
-          <div className="movie-grid">
-            {topRatedMovies.slice(0, 10).map((movie) => (
+          
+          <button 
+            className="slider-nav-btn prev"
+            onClick={() => scroll('topRated', 'left')}
+            aria-label="이전"
+          >
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button 
+            className="slider-nav-btn next"
+            onClick={() => scroll('topRated', 'right')}
+            aria-label="다음"
+          >
+            <i className="fas fa-chevron-right"></i>
+          </button>
+
+          <div 
+            className="movie-grid"
+            ref={(el) => sliderRefs.current['topRated'] = el}
+          >
+            {topRatedMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
@@ -256,8 +345,27 @@ const Home = () => {
             </h2>
             <span className="movie-count">{upcomingMovies.length}개</span>
           </div>
-          <div className="movie-grid">
-            {upcomingMovies.slice(0, 10).map((movie) => (
+          
+          <button 
+            className="slider-nav-btn prev"
+            onClick={() => scroll('upcoming', 'left')}
+            aria-label="이전"
+          >
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button 
+            className="slider-nav-btn next"
+            onClick={() => scroll('upcoming', 'right')}
+            aria-label="다음"
+          >
+            <i className="fas fa-chevron-right"></i>
+          </button>
+
+          <div 
+            className="movie-grid"
+            ref={(el) => sliderRefs.current['upcoming'] = el}
+          >
+            {upcomingMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
@@ -277,8 +385,27 @@ const Home = () => {
             </h2>
             <span className="movie-count">{actionMovies.length}개</span>
           </div>
-          <div className="movie-grid">
-            {actionMovies.slice(0, 10).map((movie) => (
+          
+          <button 
+            className="slider-nav-btn prev"
+            onClick={() => scroll('action', 'left')}
+            aria-label="이전"
+          >
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <button 
+            className="slider-nav-btn next"
+            onClick={() => scroll('action', 'right')}
+            aria-label="다음"
+          >
+            <i className="fas fa-chevron-right"></i>
+          </button>
+
+          <div 
+            className="movie-grid"
+            ref={(el) => sliderRefs.current['action'] = el}
+          >
+            {actionMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
