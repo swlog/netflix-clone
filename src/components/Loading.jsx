@@ -21,7 +21,7 @@ const Loading = () => {
         </div>
         
         <p className="loading-text">
-          <span>영화 정보를 불러오는 중</span>
+          <span>영화를 불러오는 중..</span>
           <span className="dots">
             <span>.</span>
             <span>.</span>
