@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import tmdbService from "../services/tmdb";
 import MovieCard from "../components/MovieCard";
+import Loading from "../components/Loading";
 import { useWishlist } from "../hooks/useWishlist";
 import toast from "react-hot-toast";
 import "./Popular.css";
@@ -174,7 +175,7 @@ const Popular = () => {
       {/* 영화 리스트 */}
       <div className="movies-container">
         {loading ? (
-          <div className="loading-spinner">불러오는 중...</div>
+          <Loading />
         ) : (
           <>
             <div className="movies-grid">

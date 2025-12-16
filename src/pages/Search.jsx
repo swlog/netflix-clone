@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import tmdbService from "../services/tmdb";
 import MovieCard from "../components/MovieCard";
+import Loading from "../components/Loading";
 import { useWishlist } from "../hooks/useWishlist";
 import toast from "react-hot-toast";
 import "./Search.css";
@@ -43,6 +44,7 @@ const Search = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [showTopButton, setShowTopButton] = useState(false);
 
   /* ================= 필터 ================= */
@@ -99,6 +101,7 @@ const Search = () => {
         toast.error("영화 정보를 불러올 수 없습니다.");
       } finally {
         setLoading(false);
+        setInitialLoading(false);
       }
     },
     [searchQuery, sortBy, minRating, selectedGenres]
@@ -160,6 +163,10 @@ const Search = () => {
       prev.includes(id) ? prev.filter((g) => g !== id) : [...prev, id]
     );
   };
+
+  if (initialLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="search-page">
