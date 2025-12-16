@@ -168,11 +168,13 @@ const Wishlist = () => {
     })(),
   };
 
-  // 핸들러
+  // ⭐ 핸들러 - 하트 아이콘 추가
   const handleRemove = (movie) => {
     toggleWishlist(movie);
     toast.error(`${movie.title}을(를) 위시리스트에서 제거했습니다`, {
       position: 'bottom-right',
+      icon: '💔', // ⭐ 깨진 하트 아이콘
+      duration: 2000,
     });
   };
 
@@ -181,6 +183,8 @@ const Wishlist = () => {
       clearWishlist();
       toast.success('위시리스트를 모두 삭제했습니다', {
         position: 'bottom-right',
+        icon: '🗑️', // ⭐ 쓰레기통 아이콘
+        duration: 2000,
       });
     }
   };
