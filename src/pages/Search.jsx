@@ -201,14 +201,22 @@ const Search = () => {
   };
 
   const handleWishlist = (movie) => {
-    const added = toggleWishlist(movie);
-    toast(
-      added
-        ? `${movie.title}을(를) 위시리스트에 추가`
-        : `${movie.title}을(를) 위시리스트에서 제거`,
-      { position: 'bottom-right' }
-    );
-  };
+  const added = toggleWishlist(movie);
+  
+  if (added) {
+    toast.success(`${movie.title} 위시리스트에 추가되었습니다.`, {
+      position: "bottom-right",
+      icon: "❤️", // ⭐ 하트 아이콘
+      duration: 2000,
+    });
+  } else {
+    toast(`${movie.title} 위시리스트에서 제거되었습니다`, {
+      position: "bottom-right",
+      icon: "💔", // ⭐ 깨진 하트 아이콘
+      duration: 2000,
+    });
+  }
+};
 
   const handleGenreToggle = (genreId) => {
     setSelectedGenres((prev) =>

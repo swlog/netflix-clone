@@ -115,14 +115,23 @@ const Popular = () => {
     }
   };
 
+  // ⭐ 하트 아이콘 toast 알림 추가
   const handleWishlist = (movie) => {
     const added = toggleWishlist(movie);
-    toast(
-      added
-        ? `${movie.title}을(를) 위시리스트에 추가`
-        : `${movie.title}을(를) 위시리스트에서 제거`,
-      { position: "bottom-right" }
-    );
+    
+    if (added) {
+      toast.success(`${movie.title} 위시리스트에 추가되었습니다.`, {
+        position: "bottom-right",
+        icon: "❤️", // ⭐ 하트 아이콘 추가
+        duration: 2000,
+      });
+    } else {
+      toast(`${movie.title} 위시리스트에서 제거되었습니다`, {
+        position: "bottom-right",
+        icon: "💔", // ⭐ 깨진 하트 아이콘
+        duration: 2000,
+      });
+    }
   };
 
   /* ==================== 페이지네이션 번호 계산 ==================== */
