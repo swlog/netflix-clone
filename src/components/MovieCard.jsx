@@ -5,8 +5,8 @@ import './MovieCard.css';
 const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const handleWishlistClick = (e) => {
-    e.stopPropagation();
+  // ⭐ 카드 클릭 시 위시리스트 토글
+  const handleCardClick = () => {
     onToggleWishlist(movie);
   };
 
@@ -30,15 +30,11 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
   const posterUrl = tmdbService.getImageUrl(movie.poster_path, 'w500');
 
   return (
-    <div className={`movie-card ${isInWishlist ? 'in-wishlist' : ''}`}>
-      {/* 위시리스트 버튼 - 별 아이콘 */}
-      <button 
-        className={`wishlist-btn ${isInWishlist ? 'active' : ''}`}
-        onClick={handleWishlistClick}
-        aria-label={isInWishlist ? '위시리스트에서 제거' : '위시리스트에 추가'}
-      >
-        <i className={`${isInWishlist ? 'fas' : 'far'} fa-star`}></i>
-      </button>
+    <div 
+      className={`movie-card ${isInWishlist ? 'in-wishlist' : ''}`}
+      onClick={handleCardClick}
+    >
+      {/* ❌ 위시리스트 버튼 제거 */}
 
       {/* 포스터 이미지 */}
       <div className="movie-poster">
@@ -95,10 +91,6 @@ const MovieCard = ({ movie, isInWishlist, onToggleWishlist }) => {
               </div>
             )}
 
-            <button className="play-btn">
-              <i className="fas fa-play"></i>
-              <span>상세보기</span>
-            </button>
           </div>
         </div>
       </div>
