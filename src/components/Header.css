@@ -5,24 +5,20 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 70px;
+  height: 68px;
   z-index: 1000;
-  transition: all 0.4s ease;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+  transition: background-color 0.4s ease;
+  background-color: transparent;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, transparent);
 }
 
 .netflix-header.scrolled {
-  background: linear-gradient(
-    135deg,
-    rgba(229, 9, 20, 0.15),
-    rgba(20, 20, 20, 0.95)
-  );
-  box-shadow: 0 4px 20px rgba(229, 9, 20, 0.2);
+  background-color: #141414;
 }
 
 .header-container {
   height: 100%;
-  padding: 0 60px;
+  padding: 0 4%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,12 +29,14 @@
 .header-left {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 25px;
 }
 
 .netflix-logo {
-  font-size: 28px;
-  font-weight: 900;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 1px;
+  line-height: 1;
   color: #e50914;
   text-decoration: none;
 }
@@ -52,13 +50,17 @@
   color: #e5e5e5;
   text-decoration: none;
   font-size: 14px;
-  padding: 6px 10px;
-  border-radius: 20px;
+  transition: color 0.4s;
 }
 
 .nav-link:hover {
-  background: rgba(229, 9, 20, 0.2);
+  color: #b3b3b3;
+}
+
+.nav-link.active {
   color: #fff;
+  font-weight: 700;
+  cursor: default;
 }
 
 /* ================= Right ================= */
@@ -66,7 +68,15 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 22px;
+}
+
+.header-icon {
+  color: #fff;
+  font-size: 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 /* ⭐ 프로필 컨테이너 */
@@ -79,13 +89,6 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background 0.3s ease;
-}
-
-.profile-wrapper:hover {
-  background: rgba(255, 255, 255, 0.1);
 }
 
 .user-email {
@@ -94,14 +97,15 @@
 }
 
 .user-icon {
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, #e50914, #b20710);
+  width: 32px;
+  height: 32px;
+  background: #0071eb;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
+  font-size: 18px;
 }
 
 /* ⭐ 드롭다운 화살표 */
@@ -123,9 +127,8 @@
   min-width: 220px;
   background: rgba(0, 0, 0, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  border-radius: 2px;
   padding: 10px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
   animation: dropdownFadeIn 0.2s ease;
   z-index: 1001;
 }
@@ -153,7 +156,7 @@
 
 .dropdown-user-info i {
   font-size: 24px;
-  color: #e50914;
+  color: #0071eb;
 }
 
 .dropdown-divider {
@@ -180,8 +183,7 @@
 }
 
 .dropdown-logout:hover {
-  background: rgba(229, 9, 20, 0.2);
-  color: #e50914;
+  text-decoration: underline;
 }
 
 .dropdown-logout i {
@@ -226,14 +228,10 @@
 
 .mobile-menu {
   position: fixed;
-  top: 70px;
+  top: 68px;
   left: 0;
   right: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(20, 20, 20, 0.98),
-    rgba(0, 0, 0, 0.98)
-  );
+  background: rgba(0, 0, 0, 0.95);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -247,9 +245,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px;
-  background: rgba(229, 9, 20, 0.15);
-  border: 1px solid rgba(229, 9, 20, 0.3);
-  border-radius: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -258,7 +254,7 @@
 
 .mobile-user-info i {
   font-size: 20px;
-  color: #e50914;
+  color: #0071eb;
 }
 
 .mobile-menu a {
@@ -276,10 +272,10 @@
 .mobile-logout {
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid rgba(229, 9, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   background: none;
   color: #fff;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -287,8 +283,8 @@
 }
 
 .mobile-logout:hover {
-  background: rgba(229, 9, 20, 0.2);
-  border-color: rgba(229, 9, 20, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
 }
 
 /* ================= Animation ================= */
@@ -331,5 +327,13 @@
 
   .header-container {
     padding: 0 20px;
+  }
+
+  .header-right {
+    gap: 16px;
+  }
+
+  .netflix-logo {
+    font-size: 28px;
   }
 }

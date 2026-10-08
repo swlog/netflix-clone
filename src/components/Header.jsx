@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
+
+const NAV_ITEMS = [
+  { to: '/', label: '홈' },
+  { to: '/popular', label: 'NEW! 요즘 대세 콘텐츠' },
+  { to: '/wishlist', label: '내가 찜한 콘텐츠' },
+];
 
 export default function Header() {
   const navigate = useNavigate();
@@ -74,30 +80,33 @@ export default function Header() {
 
             {/* PC 네비 */}
             <nav className="main-nav">
-              <Link to="/" className="nav-link">홈</Link>
-              <Link to="/popular" className="nav-link">대세 콘텐츠</Link>
-              <Link to="/search" className="nav-link">찾아보기</Link>
-              <Link to="/wishlist" className="nav-link">내가 찜한 리스트</Link>
+              {NAV_ITEMS.map(({ to, label }) => (
+                <NavLink key={to} to={to} end className="nav-link">
+                  {label}
+                </NavLink>
+              ))}
             </nav>
           </div>
 
           {/* 오른쪽 */}
           <div className="header-right">
+            <Link to="/search" className="header-icon" aria-label="검색">
+              <i className="fas fa-search"></i>
+            </Link>
+            <span className="header-icon" aria-hidden="true">
+              <i className="fas fa-bell"></i>
+            </span>
+
             {isLoggedIn ? (
               <div className="profile-container" ref={profileRef}>
-                <div 
+                <div
                   className="profile-wrapper"
                   onClick={() => setProfileOpen(!profileOpen)}
                 >
                   {/* ⭐ 이메일 표시 제거 - 드롭다운 안에만 표시 */}
-                  
+
                   <div className="user-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-                        fill="currentColor"
-                      />
-                    </svg>
+                    <i className="fas fa-face-smile"></i>
                   </div>
 
                   <i className={`fas fa-caret-down dropdown-arrow ${profileOpen ? 'open' : ''}`}></i>
@@ -148,10 +157,10 @@ export default function Header() {
             </div>
           )}
           
-          <Link to="/" onClick={() => setMenuOpen(false)}>홈</Link>
-          <Link to="/popular" onClick={() => setMenuOpen(false)}>대세 콘텐츠</Link>
+          {NAV_ITEMS.map(({ to, label }) => (
+            <Link key={to} to={to} onClick={() => setMenuOpen(false)}>{label}</Link>
+          ))}
           <Link to="/search" onClick={() => setMenuOpen(false)}>찾아보기</Link>
-          <Link to="/wishlist" onClick={() => setMenuOpen(false)}>내가 찜한 리스트</Link>
 
           {isLoggedIn && (
             <button onClick={handleLogout} className="mobile-logout">
