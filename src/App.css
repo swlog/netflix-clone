@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", Arial, sans-serif;
   background-color: #141414;
   color: #ffffff;
 }
@@ -25,24 +25,13 @@ body {
 }
 
 .page-wrapper {
-  animation: netflixTransition 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
+  /* transform을 쓰면 fixed 헤더 위치가 흔들려서 opacity만 사용 */
+  animation: pageFadeIn 0.3s ease;
 }
 
-@keyframes netflixTransition {
-  0% {
-    opacity: 0;
-    transform: translateX(50px) scale(0.95);
-    filter: blur(8px);
-  }
-  50% {
-    filter: blur(4px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    filter: blur(0);
-  }
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* =========================================================
