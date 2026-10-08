@@ -27,6 +27,29 @@ export const GENRES = {
   WESTERN: 37,
 };
 
+// 장르 ID → 한글 이름
+export const GENRE_NAMES = {
+  28: '액션',
+  12: '모험',
+  16: '애니메이션',
+  35: '코미디',
+  80: '범죄',
+  99: '다큐멘터리',
+  18: '드라마',
+  10751: '가족',
+  14: '판타지',
+  36: '역사',
+  27: '공포',
+  10402: '음악',
+  9648: '미스터리',
+  10749: '로맨스',
+  878: 'SF',
+  10770: 'TV 영화',
+  53: '스릴러',
+  10752: '전쟁',
+  37: '서부',
+};
+
 /**
  * axios 인스턴스 생성
  */
@@ -179,6 +202,26 @@ export const getMovieDetails = async (movieId) => {
 };
 
 /**
+ * 히어로 배너용 상세 정보 (타이틀 로고 이미지 + 국내 관람등급)
+ * @param {number} movieId - 영화 ID
+ */
+export const getHeroDetails = async (movieId) => {
+  try {
+    const api = createAxiosInstance();
+    const response = await api.get(`/movie/${movieId}`, {
+      params: {
+        append_to_response: 'images,release_dates',
+        include_image_language: 'ko,en,null',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('히어로 상세 정보 로딩 실패:', error);
+    throw error;
+  }
+};
+
+/**
  * 영화 검색
  * @param {string} query - 검색어
  * @param {number} page - 페이지 번호
@@ -299,6 +342,7 @@ const tmdbService = {
   getTopRatedMovies,
   getMoviesByGenre,
   getMovieDetails,
+  getHeroDetails,
   searchMovies,
   getGenres,
   getMovieCredits,
